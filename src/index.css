@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DEVZeroOne Design System - Educational Platform
+All colors MUST be HSL for proper theming.
+*/
+
+@layer base {
+  :root {
+    /* DEVZeroOne Dark Theme */
+    --background: 215 35% 7%;           /* #0B1221 - Main background */
+    --foreground: 198 83% 74%;          /* #0EA0E2 - Primary text */
+
+    --card: 215 35% 7%;                 /* #0B1221 - Card background */
+    --card-foreground: 198 83% 74%;     /* #0EA0E2 - Card text */
+
+    --popover: 220 44% 10%;             /* #0F172A - Popover background */
+    --popover-foreground: 198 83% 74%;  /* #0EA0E2 - Popover text */
+
+    --primary: 198 83% 45%;             /* #0EA0E2 - Primary brand color */
+    --primary-foreground: 0 0% 100%;    /* White text on primary */
+
+    --secondary: 220 44% 10%;           /* #0F172A - Secondary background */
+    --secondary-foreground: 198 83% 74%; /* #0EA0E2 - Secondary text */
+
+    --muted: 220 44% 10%;               /* #0F172A - Muted background */
+    --muted-foreground: 198 50% 60%;    /* Muted text */
+
+    --accent: 198 83% 45%;              /* #0EA0E2 - Accent color */
+    --accent-foreground: 0 0% 100%;     /* White text on accent */
+
+    --destructive: 0 84% 60%;           /* Red for destructive actions */
+    --destructive-foreground: 0 0% 100%; /* White text on destructive */
+
+    --border: 220 30% 15%;              /* Border color */
+    --input: 220 30% 15%;               /* Input background */
+    --ring: 198 83% 45%;                /* Focus ring color */
+
+    --radius: 0.75rem;                  /* Rounded corners */
+
+    /* Custom tokens for DEVZeroOne */
+    --section-bg: 220 44% 10%;          /* #0F172A - Section backgrounds */
+    --hero-gradient: linear-gradient(135deg, hsl(215 35% 7%), hsl(220 44% 10%));
+    --glow-primary: 198 83% 45%;        /* #0EA0E2 for glows */
+    --text-highlight: 198 83% 74%;      /* #0EA0E2 for highlights */
+    
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Hero Section Styles */
+  .hero-gradient {
+    background: var(--hero-gradient);
+  }
+  
+  /* Glow Effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
+  }
+  
+  .glow-primary-lg {
+    box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.4);
+  }
+  
+  /* Section Backgrounds */
+  .section-bg {
+    background-color: hsl(var(--section-bg));
+  }
+  
+  /* Card Hover Effects */
+  .card-hover {
+    transition: var(--transition-smooth);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px hsl(var(--glow-primary) / 0.2);
+  }
+  
+  /* Button Animations */
+  .btn-bounce {
+    transition: var(--transition-bounce);
+  }
+  
+  .btn-bounce:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Text Gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--text-highlight)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  @keyframes glow {
+    from { box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3); }
+    to { box-shadow: 0 0 30px hsl(var(--glow-primary) / 0.6); }
+  }
+}
