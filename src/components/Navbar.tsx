@@ -47,112 +47,113 @@ const Navbar = () => {
               </span>
             </Link>
           </motion.div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.div
-                key={item.name}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
-                    isActive(item.path)
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-primary hover:bg-primary/5"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Auth Section */}
-          <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated && user ? (
-              <div className="relative">
-                <motion.button
+          <div className="hidden md:flex items-center">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center">
+              {navItems.map((item) => (
+                <motion.div
+                  key={item.name}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() =>
-                    setIsProfileDropdownOpen(!isProfileDropdownOpen)
-                  }
-                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-primary/10 transition-colors"
                 >
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                    {user.image ? (
-                      <img
-                        src={user.image}
-                        alt={user.name}
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <User className="w-4 h-4 text-white" />
-                    )}
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                </motion.button>
+                  <Link
+                    to={item.path}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                      isActive(item.path)
+                        ? "text-primary bg-primary/10"
+                        : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
 
-                <AnimatePresence>
-                  {isProfileDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg py-2"
-                    >
-                      <div className="px-4 py-2 border-b border-border">
-                        <p className="text-sm font-medium text-foreground">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground capitalize">
-                          {user.role}
-                        </p>
-                      </div>
-                      <Link
-                        to="/dashboard"
-                        className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors"
+            {/* Auth Section */}
+            <div className="hidden md:flex items-center space-x-4">
+              {isAuthenticated && user ? (
+                <div className="relative">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() =>
+                      setIsProfileDropdownOpen(!isProfileDropdownOpen)
+                    }
+                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                  >
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                      {user.image ? (
+                        <img
+                          src={user.image}
+                          alt={user.name}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {isProfileDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-lg py-2"
                       >
-                        <Settings className="w-4 h-4 mr-2" />
-                        Dashboard
-                      </Link>
-                      <button className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors">
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Logout
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button asChild className="btn-bounce">
-                  <Link to="/login">Sign In</Link>
-                </Button>
-              </motion.div>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
+                        <div className="px-4 py-2 border-b border-border">
+                          <p className="text-sm font-medium text-foreground">
+                            {user.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground capitalize">
+                            {user.role}
+                          </p>
+                        </div>
+                        <Link
+                          to="/dashboard"
+                          className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors"
+                        >
+                          <Settings className="w-4 h-4 mr-2" />
+                          Dashboard
+                        </Link>
+                        <button className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors">
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Logout
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
-                <Menu className="w-6 h-6" />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button asChild className="btn-bounce">
+                    <Link to="/login">Sign In</Link>
+                  </Button>
+                </motion.div>
               )}
-            </motion.button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </motion.button>
+            </div>
           </div>
         </div>
 
