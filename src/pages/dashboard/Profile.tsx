@@ -99,7 +99,7 @@ const Profile = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-linear-to-br from-primary to-accent flex items-center justify-center">
                 {profile?.image ? (
                   <img
                     src={profile.image}

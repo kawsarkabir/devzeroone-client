@@ -116,7 +116,7 @@ const TeachCallToAction = () => {
                   whileHover={{ x: 10 }}
                   className="flex items-start space-x-4"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                     <benefit.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -170,7 +170,7 @@ const TeachCallToAction = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-8 backdrop-blur-sm border border-primary/20"
+                className="bg-linear-to-br from-primary/20 to-accent/20 rounded-2xl p-8 backdrop-blur-sm border border-primary/20"
               >
                 <img
                   src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=400&fit=crop"

@@ -144,7 +144,7 @@ const TeachPage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 text-center"
+          className="bg-linear-to-r from-primary/10 to-accent/10 rounded-2xl p-8 text-center"
         >
           <h2 className="text-3xl font-bold mb-4">Ready to Start Teaching?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">

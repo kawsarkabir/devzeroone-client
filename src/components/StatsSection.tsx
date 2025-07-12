@@ -94,7 +94,7 @@ const StatsSection = () => {
                 alt="Students learning together"
                 className="rounded-2xl object-cover w-full h-96"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-2xl" />
+              <div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-transparent rounded-2xl" />
               
               {/* Floating Achievement Badge */}
               <motion.div

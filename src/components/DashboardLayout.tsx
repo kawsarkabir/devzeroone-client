@@ -87,7 +87,7 @@ const DashboardLayout = () => {
       >
         <div className="p-6 border-b border-border/50">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">D</span>
             </div>
             <div>

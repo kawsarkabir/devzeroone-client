@@ -148,7 +148,7 @@ const Hero = () => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="relative z-10 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-8 backdrop-blur-sm border border-primary/20"
+                className="relative z-10 bg-linear-to-br from-primary/20 to-accent/20 rounded-2xl p-8 backdrop-blur-sm border border-primary/20"
               >
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-card rounded-lg p-4 card-hover">
