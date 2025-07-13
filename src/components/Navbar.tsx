@@ -5,6 +5,7 @@ import { Menu, X, User, ChevronDown, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { logout } from "@/services/authService";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +15,9 @@ const Navbar = () => {
     (state: RootState) => state.auth
   );
 
+  const handleLogout = () => {
+    logout();
+  };
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -38,13 +42,11 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2"
           >
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">D</span>
+            <Link to="/" className="flex items-center space-x-1">
+              <div className="w-6 h-6 bg-linear-to-br from-primary to-accent rounded flex items-center justify-center">
+                <span className="text-white font-bold">D</span>
               </div>
-              <span className="text-xl font-bold text-gradient">
-                DEVZeroOne
-              </span>
+              <span className="font-bold text-gradient">DEVZeroOne</span>
             </Link>
           </motion.div>
           <div className="hidden md:flex items-center">
@@ -120,7 +122,10 @@ const Navbar = () => {
                           <Settings className="w-4 h-4 mr-2" />
                           Dashboard
                         </Link>
-                        <button className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-primary/10 transition-colors cursor-pointer"
+                        >
                           <LogOut className="w-4 h-4 mr-2" />
                           Logout
                         </button>
