@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { loginWithEmail } from "../services/authService";
 import { setUser } from "../store/slices/authSlice";
 import { toast } from "sonner";

@@ -85,11 +85,11 @@ const Navbar = () => {
                     className="flex items-center space-x-2 p-2 rounded-lg hover:bg-primary/10 transition-colors"
                   >
                     <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      {user.image ? (
+                      {user.photoURL ? (
                         <img
-                          src={user.image}
+                          src={user.photoURL}
                           alt={user.name}
-                          className="w-8 h-8 rounded-full object-cover"
+                          className="w-8 h-8 rounded-full object-cover border-2 border-primary"
                         />
                       ) : (
                         <User className="w-4 h-4 text-white" />

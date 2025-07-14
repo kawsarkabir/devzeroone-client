@@ -1,16 +1,31 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { TrendingUp, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import CourseCard from './CourseCard';
-import { mockCourses } from '@/data/mockData';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { TrendingUp, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import CourseCard from "./CourseCard";
+import { mockCourses } from "@/data/mockData";
+import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { getPopularCourses } from "@/services/classService";
 
 const PopularCourses = () => {
-  // Get top 6 courses by enrollment
-  const popularCourses = mockCourses
-    .sort((a, b) => b.totalEnrollment - a.totalEnrollment)
-    .slice(0, 6);
+  
+  const {
+    data: popularCourses,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["popularCourses"],
+    queryFn: getPopularCourses,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  console.log(popularCourses);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) {
+    toast.error("Failed to load popular courses");
+    return <p>Error loading courses.</p>;
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,8 +75,9 @@ const PopularCourses = () => {
             variants={itemVariants}
             className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
           >
-            Discover our most enrolled courses that have helped thousands of students 
-            achieve their career goals. Join the learning revolution today.
+            Discover our most enrolled courses that have helped thousands of
+            students achieve their career goals. Join the learning revolution
+            today.
           </motion.p>
         </motion.div>
 
@@ -74,11 +90,7 @@ const PopularCourses = () => {
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
         >
           {popularCourses.map((course, index) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              index={index}
-            />
+            <CourseCard key={course._id} course={course} index={index} />
           ))}
         </motion.div>
 

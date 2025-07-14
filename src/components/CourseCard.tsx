@@ -1,9 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Star, Users, Clock, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Course } from '@/data/mockData';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Star, Users, Clock, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Course } from "@/data/mockData";
+import { Link } from "react-router";
 
 interface CourseCardProps {
   course: Course;
@@ -37,7 +37,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
           className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
-        
+
         {/* Price Badge */}
         <div className="absolute top-4 right-4">
           <span className="bg-primary px-3 py-1 rounded-full text-sm font-semibold text-white">
@@ -62,7 +62,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
             className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
           />
           <div>
-            <p className="text-sm font-medium text-foreground">{course.instructor}</p>
+            <p className="text-sm font-medium text-foreground">
+              {course.instructor}
+            </p>
             <p className="text-xs text-muted-foreground">Instructor</p>
           </div>
         </div>
@@ -81,14 +83,16 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
         <div className="flex items-center justify-between mb-6 text-sm text-muted-foreground">
           <div className="flex items-center space-x-1">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="font-medium">{course.rating}</span>
+            <span className="font-medium">
+              {course.rating.average} ({course.rating.count})
+            </span>
           </div>
-          
+
           <div className="flex items-center space-x-1">
             <Users className="w-4 h-4" />
             <span>{course.totalEnrollment.toLocaleString()}</span>
           </div>
-          
+
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
             <span>{course.duration}</span>
@@ -103,10 +107,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
         </div>
 
         {/* Enroll Button */}
-        <Button
-          asChild
-          className="w-full btn-bounce group/btn"
-        >
+        <Button asChild className="w-full btn-bounce group/btn">
           <Link to={`/course/${course.id}`}>
             Enroll Now
             <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
