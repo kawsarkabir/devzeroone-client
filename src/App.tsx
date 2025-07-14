@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Index from "./pages/Index";
@@ -45,9 +45,9 @@ const App = () => (
               <Navbar />
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/classes" element={<AllClasses />} />
+                <Route path="/courses" element={<AllClasses />} />
                 <Route
-                  path="/course/:id"
+                  path="/courses/:id"
                   element={
                     <ProtectedRoute>
                       <CourseDetails />

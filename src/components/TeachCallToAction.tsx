@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, ArrowRight, Users, DollarSign, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const TeachCallToAction = () => {
   const benefits = [

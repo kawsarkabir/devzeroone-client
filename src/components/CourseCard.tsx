@@ -108,7 +108,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
 
         {/* Enroll Button */}
         <Button asChild className="w-full btn-bounce group/btn">
-          <Link to={`/course/${course.id}`}>
+          <Link to={`/courses/${course._id}`}>
             Enroll Now
             <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
           </Link>

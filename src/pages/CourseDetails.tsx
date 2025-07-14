@@ -1,19 +1,27 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, Users, Clock, Award, Play, BookOpen, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { getClassById } from '@/services/classService';
+import React from "react";
+import { motion } from "framer-motion";
+import { useParams, Link, useNavigate } from "react-router";
+import {
+  Star,
+  Users,
+  Clock,
+  Award,
+  Play,
+  BookOpen,
+  ArrowLeft,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { getClassById } from "@/services/classService";
 
 const CourseDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
+
   const { data: course, isLoading } = useQuery({
-    queryKey: ['class-details', id],
+    queryKey: ["courses-details", id],
     queryFn: () => getClassById(id!),
-    enabled: !!id
+    enabled: !!id,
   });
 
   if (isLoading) {
@@ -38,10 +46,10 @@ const CourseDetails = () => {
   }
 
   const features = [
-    { icon: BookOpen, text: 'Comprehensive curriculum' },
-    { icon: Play, text: 'Video lectures' },
-    { icon: Award, text: 'Certificate of completion' },
-    { icon: Users, text: 'Community support' },
+    { icon: BookOpen, text: "Comprehensive curriculum" },
+    { icon: Play, text: "Video lectures" },
+    { icon: Award, text: "Certificate of completion" },
+    { icon: Users, text: "Community support" },
   ];
 
   return (
@@ -86,38 +94,42 @@ const CourseDetails = () => {
               </div>
 
               {/* Course Title */}
-              <h1 className="text-3xl sm:text-4xl font-bold mb-4">{course.title}</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+                {course.title}
+              </h1>
 
               {/* Course Stats */}
               <div className="flex items-center space-x-6 mb-6 text-sm">
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-medium">4.5</span>
-                  <span className="text-muted-foreground">(234 reviews)</span>
+                  <span className="font-medium">{course.rating.average}</span>
+                  <span className="text-muted-foreground">{`(${course.rating.count})`}</span>
                 </div>
-                
+
                 <div className="flex items-center space-x-1">
                   <Users className="w-4 h-4 text-muted-foreground" />
                   <span>{course.totalEnrollment || 0} students</span>
                 </div>
-                
+
                 <div className="flex items-center space-x-1">
                   <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span>8 weeks</span>
+                  <span>{course.duration}</span>
                 </div>
               </div>
 
               {/* Instructor */}
               <div className="flex items-center space-x-4 mb-8 p-4 bg-card rounded-lg border border-border/50">
                 <img
-                  src={course.image || '/placeholder.svg'}
+                  src={course.instructorImage || "/placeholder.svg"}
                   alt={course.name}
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="font-semibold text-lg">{course.name}</h3>
+                  <h3 className="font-semibold text-lg">{course.instructor}</h3>
                   <p className="text-muted-foreground">Expert Instructor</p>
-                  <p className="text-sm text-muted-foreground">{course.email}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {course.email}
+                  </p>
                 </div>
               </div>
 
@@ -127,7 +139,7 @@ const CourseDetails = () => {
                 <p className="text-muted-foreground leading-relaxed mb-6">
                   {course.description}
                 </p>
-                
+
                 <div className="grid md:grid-cols-2 gap-4">
                   {features.map((feature, index) => (
                     <div key={index} className="flex items-center space-x-3">
@@ -145,18 +157,20 @@ const CourseDetails = () => {
                 <h2 className="text-2xl font-bold mb-4">What You'll Learn</h2>
                 <div className="grid md:grid-cols-2 gap-3">
                   {[
-                    'Master the fundamentals and advanced concepts',
-                    'Build real-world projects from scratch',
-                    'Industry best practices and methodologies',
-                    'Portfolio-ready applications',
-                    'Problem-solving and debugging techniques',
-                    'Professional development workflows'
+                    "Master the fundamentals and advanced concepts",
+                    "Build real-world projects from scratch",
+                    "Industry best practices and methodologies",
+                    "Portfolio-ready applications",
+                    "Problem-solving and debugging techniques",
+                    "Professional development workflows",
                   ].map((item, index) => (
                     <div key={index} className="flex items-start space-x-2">
                       <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mt-0.5">
                         <div className="w-2 h-2 bg-primary rounded-full" />
                       </div>
-                      <span className="text-sm text-muted-foreground">{item}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {item}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -178,11 +192,13 @@ const CourseDetails = () => {
                   <div className="text-3xl font-bold text-primary mb-2">
                     ${course.price}
                   </div>
-                  <p className="text-sm text-muted-foreground">One-time payment</p>
+                  <p className="text-sm text-muted-foreground">
+                    One-time payment
+                  </p>
                 </div>
 
                 {/* Enroll Button */}
-                <Button 
+                <Button
                   className="w-full mb-4 glow-primary btn-bounce"
                   onClick={() => navigate(`/payment/${id}`)}
                 >
@@ -196,16 +212,18 @@ const CourseDetails = () => {
                 {/* Course Includes */}
                 <div className="space-y-3 pt-6 border-t border-border/50">
                   <h3 className="font-semibold mb-3">This course includes:</h3>
-                  
+
                   {[
-                    { icon: Play, text: '25+ hours of video content' },
-                    { icon: BookOpen, text: 'Downloadable resources' },
-                    { icon: Award, text: 'Certificate of completion' },
-                    { icon: Users, text: 'Access to student community' },
+                    { icon: Play, text: "25+ hours of video content" },
+                    { icon: BookOpen, text: "Downloadable resources" },
+                    { icon: Award, text: "Certificate of completion" },
+                    { icon: Users, text: "Access to student community" },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center space-x-3">
                       <item.icon className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-muted-foreground">{item.text}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {item.text}
+                      </span>
                     </div>
                   ))}
                 </div>

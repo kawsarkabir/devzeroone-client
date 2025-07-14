@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getClassById, getClassAssignments, submitAssignment } from '../../services/classService';
 import { createFeedback } from '../../services/feedbackService';

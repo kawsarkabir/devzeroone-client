@@ -16,7 +16,7 @@ export interface Class {
 
 export interface Assignment {
   _id: string;
-  classId: string;
+  courseId: string;
   title: string;
   description: string;
   deadline: string;
@@ -24,84 +24,78 @@ export interface Assignment {
 }
 
 export const getAllClasses = async () => {
-  const response = await api.get("/classes");
+  const response = await api.get("/courses");
   return response.data;
 };
 
 export const getPopularCourses = async () => {
-  try {
-    const response = await api.get('/courses/popular');
-    console.log('API Response in getPopularCourses:', response.data); // Debug log
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching popular courses:', error); // Debug log
-    throw error;
-  }
+  const response = await api.get("/courses/popular");
+  return response.data.data;
 };
 
 export const getApprovedClasses = async () => {
-  const response = await api.get("/classes/approved");
+  const response = await api.get("/courses/approved");
   return response.data;
 };
 
 export const getClassById = async (id: string) => {
-  const response = await api.get(`/classes/${id}`);
-  return response.data;
+  const response = await api.get(`/courses/${id}`);
+  return response.data.data;
 };
 
 export const createClass = async (
   classData: Omit<Class, "_id" | "status" | "totalEnrollment" | "createdAt">
 ) => {
-  const response = await api.post("/classes", classData);
+  const response = await api.post("/courses", classData);
   return response.data;
 };
 
 export const updateClass = async (id: string, classData: Partial<Class>) => {
-  const response = await api.put(`/classes/${id}`, classData);
+  const response = await api.put(`/courses/${id}`, classData);
   return response.data;
 };
 
 export const deleteClass = async (id: string) => {
-  const response = await api.delete(`/classes/${id}`);
+  const response = await api.delete(`/courses/${id}`);
   return response.data;
 };
 
 export const approveClass = async (id: string) => {
-  const response = await api.patch(`/classes/${id}/approve`);
+  const response = await api.patch(`/courses/${id}/approve`);
   return response.data;
 };
 
 export const rejectClass = async (id: string) => {
-  const response = await api.patch(`/classes/${id}/reject`);
+  const response = await api.patch(`/courses/${id}/reject`);
   return response.data;
 };
 
-export const enrollInClass = async (classId: string) => {
-  const response = await api.post(`/classes/${classId}/enroll`);
+export const enrollInClass = async (courseId: string) => {
+  const response = await api.post(`/courses/${courseId}/enroll`);
   return response.data;
 };
 
 export const getMyEnrolledClasses = async () => {
-  const response = await api.get("/classes/my-enrolled");
+  const response = await api.get("/courses/my-enrolled");
   return response.data;
 };
 
 export const getMyClasses = async () => {
-  const response = await api.get("/classes/my-classes");
+  const response = await api.get("/courses/my-classes");
   return response.data;
 };
 
-export const getClassAssignments = async (classId: string) => {
-  const response = await api.get(`/classes/${classId}/assignments`);
+export const getClassAssignments = async (courseId: string) => {
+  const response = await api.get(`/courses/${courseId}/assignments`);
   return response.data;
 };
 
 export const createAssignment = async (
-  classId: string,
-  assignmentData: Omit<Assignment, "_id" | "classId" | "submissionCount">
+  courseId: string,
+  assignmentData: Omit<Assignment, "_id" | "courseId" | "submissionCount">
 ) => {
   const response = await api.post(
-    `/classes/${classId}/assignments`,
+    `/courses/${courseId}/assignments`,
     assignmentData
   );
   return response.data;
@@ -118,16 +112,16 @@ export const submitAssignment = async (
 };
 
 export const searchClasses = async (query: string) => {
-  const response = await api.get(`/classes/search?q=${query}`);
+  const response = await api.get(`/courses/search?q=${query}`);
   return response.data;
 };
 
 export const getAllApprovedClasses = async () => {
-  const response = await api.get("/classes/approved");
+  const response = await api.get("/courses/approved");
   return response.data;
 };
 
-export const getClassStats = async (classId: string) => {
-  const response = await api.get(`/classes/${classId}/stats`);
+export const getClassStats = async (courseId: string) => {
+  const response = await api.get(`/courses/${courseId}/stats`);
   return response.data;
 };
