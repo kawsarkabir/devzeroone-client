@@ -55,18 +55,18 @@ const App = () => (
                   }
                 />
                 <Route
-                  path="/teach"
-                  element={
-                    <ProtectedRoute>
-                      <TeachPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
                   path="/payment/:id"
                   element={
                     <ProtectedRoute>
                       <PaymentPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/teach"
+                  element={
+                    <ProtectedRoute>
+                      <TeachPage />
                     </ProtectedRoute>
                   }
                 />

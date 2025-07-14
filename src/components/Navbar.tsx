@@ -21,7 +21,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "All Classes", path: "/classes" },
+    { name: "Courses", path: "/courses" },
     { name: "Teach on DEVZeroOne", path: "/teach" },
     { name: "Blog", path: "/blogs" },
   ];

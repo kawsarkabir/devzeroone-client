@@ -1,70 +1,74 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useParams, useNavigate } from 'react-router';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { CreditCard, Lock, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import { getClassById } from '@/services/classService';
-import { enrollInClass } from '@/services/paymentService';
-import Swal from 'sweetalert2';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useParams, useNavigate } from "react-router";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { CreditCard, Lock, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { getClassById } from "@/services/classService";
+import { enrollInClass } from "@/services/paymentService";
+import Swal from "sweetalert2";
 
 const PaymentPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { data: classInfo, isLoading } = useQuery({
-    queryKey: ['class-payment', id],
-    queryFn: () => getClassById(id!)
+    queryKey: ["class-payment", id],
+    queryFn: () => getClassById(id!),
   });
 
   const enrollMutation = useMutation({
     mutationFn: (paymentData: any) => enrollInClass(id!, paymentData),
     onSuccess: () => {
       Swal.fire({
-        title: 'Success!',
-        text: 'Payment successful! You have been enrolled in the class.',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
+        title: "Success!",
+        text: "",
+        icon: "success",
+        background: "#0F172A",
+        color: "#fff",
+        confirmButtonColor: "#0EA0E2",
       }).then(() => {
-        navigate('/dashboard/my-enrolled-classes');
+        navigate("/dashboard/my-enrolled-classes");
       });
     },
     onError: () => {
       setIsProcessing(false);
       Swal.fire({
-        title: 'Error!',
-        text: 'Payment failed. Please try again.',
-        icon: 'error',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
+        title: "Error!",
+        text: "Payment failed. Please try again.",
+        icon: "error",
+        background: "#0F172A",
+        color: "#fff",
+        confirmButtonColor: "#0EA0E2",
       });
-    }
+    },
   });
 
   const handlePayment = async (data: any) => {
     setIsProcessing(true);
-    
+
     // Simulate payment processing delay
     setTimeout(() => {
       const paymentData = {
         classId: id!,
         amount: classInfo.price,
-        currency: 'usd',
+        currency: "usd",
         cardNumber: data.cardNumber,
         expiryDate: data.expiryDate,
         cvv: data.cvv,
-        cardholderName: data.cardholderName
+        cardholderName: data.cardholderName,
       };
-      
+
       enrollMutation.mutate(paymentData);
     }, 2000);
   };
@@ -94,7 +98,9 @@ const PaymentPage = () => {
               <ArrowLeft className="w-4 h-4" />
               <span>Back</span>
             </Button>
-            <h1 className="text-3xl font-bold text-gradient">Complete Payment</h1>
+            <h1 className="text-3xl font-bold text-gradient">
+              Complete Payment
+            </h1>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -109,16 +115,18 @@ const PaymentPage = () => {
               <CardContent className="space-y-4">
                 <div className="flex items-center space-x-4">
                   <img
-                    src={classInfo?.image || '/placeholder.svg'}
+                    src={classInfo?.image || "/placeholder.svg"}
                     alt={classInfo?.title}
                     className="w-20 h-20 object-cover rounded-lg"
                   />
                   <div className="flex-1">
                     <h3 className="font-semibold">{classInfo?.title}</h3>
-                    <p className="text-sm text-muted-foreground">by {classInfo?.instructor}</p>
+                    <p className="text-sm text-muted-foreground">
+                      by {classInfo?.instructor}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span>Course Price:</span>
@@ -136,7 +144,9 @@ const PaymentPage = () => {
 
                 <div className="bg-card-hover p-4 rounded-lg flex items-center space-x-2">
                   <Lock className="w-4 h-4 text-green-400" />
-                  <span className="text-sm">Your payment information is secure and encrypted</span>
+                  <span className="text-sm">
+                    Your payment information is secure and encrypted
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -147,33 +157,42 @@ const PaymentPage = () => {
                 <CardTitle>Payment Information</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit(handlePayment)} className="space-y-4">
+                <form
+                  onSubmit={handleSubmit(handlePayment)}
+                  className="space-y-4"
+                >
                   <div>
                     <Label htmlFor="cardholderName">Cardholder Name</Label>
                     <Input
-                      {...register('cardholderName', { required: 'Cardholder name is required' })}
+                      {...register("cardholderName", {
+                        required: "Cardholder name is required",
+                      })}
                       placeholder="John Doe"
                     />
                     {errors.cardholderName && (
-                      <p className="text-red-400 text-sm mt-1">{errors.cardholderName.message as string}</p>
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.cardholderName.message as string}
+                      </p>
                     )}
                   </div>
 
                   <div>
                     <Label htmlFor="cardNumber">Card Number</Label>
                     <Input
-                      {...register('cardNumber', { 
-                        required: 'Card number is required',
+                      {...register("cardNumber", {
+                        required: "Card number is required",
                         pattern: {
                           value: /^\d{16}$/,
-                          message: 'Please enter a valid 16-digit card number'
-                        }
+                          message: "Please enter a valid 16-digit card number",
+                        },
                       })}
                       placeholder="1234 5678 9012 3456"
                       maxLength={16}
                     />
                     {errors.cardNumber && (
-                      <p className="text-red-400 text-sm mt-1">{errors.cardNumber.message as string}</p>
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.cardNumber.message as string}
+                      </p>
                     )}
                   </div>
 
@@ -181,43 +200,47 @@ const PaymentPage = () => {
                     <div>
                       <Label htmlFor="expiryDate">Expiry Date</Label>
                       <Input
-                        {...register('expiryDate', { 
-                          required: 'Expiry date is required',
+                        {...register("expiryDate", {
+                          required: "Expiry date is required",
                           pattern: {
                             value: /^(0[1-9]|1[0-2])\/\d{2}$/,
-                            message: 'Please enter MM/YY format'
-                          }
+                            message: "Please enter MM/YY format",
+                          },
                         })}
                         placeholder="MM/YY"
                         maxLength={5}
                       />
                       {errors.expiryDate && (
-                        <p className="text-red-400 text-sm mt-1">{errors.expiryDate.message as string}</p>
+                        <p className="text-red-400 text-sm mt-1">
+                          {errors.expiryDate.message as string}
+                        </p>
                       )}
                     </div>
 
                     <div>
                       <Label htmlFor="cvv">CVV</Label>
                       <Input
-                        {...register('cvv', { 
-                          required: 'CVV is required',
+                        {...register("cvv", {
+                          required: "CVV is required",
                           pattern: {
                             value: /^\d{3,4}$/,
-                            message: 'Please enter a valid CVV'
-                          }
+                            message: "Please enter a valid CVV",
+                          },
                         })}
                         placeholder="123"
                         maxLength={4}
                       />
                       {errors.cvv && (
-                        <p className="text-red-400 text-sm mt-1">{errors.cvv.message as string}</p>
+                        <p className="text-red-400 text-sm mt-1">
+                          {errors.cvv.message as string}
+                        </p>
                       )}
                     </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full cursor-pointer"
                     disabled={isProcessing || enrollMutation.isPending}
                   >
                     {isProcessing ? (

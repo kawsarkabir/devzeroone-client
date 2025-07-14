@@ -35,7 +35,7 @@ export const getPopularCourses = async () => {
 
 export const getApprovedClasses = async () => {
   const response = await api.get("/courses/approved");
-  return response.data;
+  return response.data.data;
 };
 
 export const getClassById = async (id: string) => {
