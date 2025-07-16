@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useParams } from 'react-router';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Users, BookOpen, CheckSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import { getClassById, getClassStats, createAssignment, getClassAssignments } from '@/services/classService';
-import Swal from 'sweetalert2';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useParams } from "react-router";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus, Users, BookOpen, CheckSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import {
+  getClassById,
+  getClassStats,
+  createAssignment,
+  getClassAssignments,
+  Assignment,
+} from "@/services/classService";
+import Swal from "sweetalert2";
 
 const ClassDetails = () => {
   const { id } = useParams();
@@ -20,49 +32,49 @@ const ClassDetails = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const { data: classInfo, isLoading: classLoading } = useQuery({
-    queryKey: ['class-details', id],
-    queryFn: () => getClassById(id!)
+    queryKey: ["class-details", id],
+    queryFn: () => getClassById(id!),
   });
 
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['class-stats', id],
-    queryFn: () => getClassStats(id!)
+    queryKey: ["class-stats", id],
+    queryFn: () => getClassStats(id!),
   });
 
   const { data: assignments = [], isLoading: assignmentsLoading } = useQuery({
-    queryKey: ['class-assignments', id],
-    queryFn: () => getClassAssignments(id!)
+    queryKey: ["class-assignments", id],
+    queryFn: () => getClassAssignments(id!),
   });
 
   const createAssignmentMutation = useMutation({
-    mutationFn: (data: any) => createAssignment(id!, data),
+    mutationFn: (data: Assignment) => createAssignment(id!, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['class-assignments', id] });
-      queryClient.invalidateQueries({ queryKey: ['class-stats', id] });
+      queryClient.invalidateQueries({ queryKey: ["class-assignments", id] });
+      queryClient.invalidateQueries({ queryKey: ["class-stats", id] });
       setShowCreateModal(false);
       reset();
       Swal.fire({
-        title: 'Success!',
-        text: 'Assignment created successfully',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
+        title: "Success!",
+        text: "Assignment created successfully",
+        icon: "success",
+        background: "#0F172A",
+        color: "#fff",
+        confirmButtonColor: "#0EA0E2",
       });
     },
     onError: () => {
       Swal.fire({
-        title: 'Error!',
-        text: 'Failed to create assignment',
-        icon: 'error',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
+        title: "Error!",
+        text: "Failed to create assignment",
+        icon: "error",
+        background: "#0F172A",
+        color: "#fff",
+        confirmButtonColor: "#0EA0E2",
       });
-    }
+    },
   });
 
-  const handleCreateAssignment = (data: any) => {
+  const handleCreateAssignment = (data: Assignment) => {
     createAssignmentMutation.mutate(data);
   };
 
@@ -81,7 +93,9 @@ const ClassDetails = () => {
       className="space-y-6"
     >
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-gradient">{classInfo?.title}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gradient">
+          {classInfo?.title}
+        </h1>
         <p className="text-muted-foreground">Class management and progress</p>
       </div>
 
@@ -89,31 +103,43 @@ const ClassDetails = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Enrollments</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Enrollments
+            </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats?.totalEnrollments || 0}</div>
+            <div className="text-2xl font-bold text-primary">
+              {stats?.totalEnrollments || 0}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Assignments</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Assignments
+            </CardTitle>
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats?.totalAssignments || 0}</div>
+            <div className="text-2xl font-bold text-primary">
+              {stats?.totalAssignments || 0}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Submissions
+            </CardTitle>
             <CheckSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{stats?.totalSubmissions || 0}</div>
+            <div className="text-2xl font-bold text-primary">
+              {stats?.totalSubmissions || 0}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -134,20 +160,36 @@ const ClassDetails = () => {
                 <DialogHeader>
                   <DialogTitle>Create New Assignment</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(handleCreateAssignment)} className="space-y-4">
+                <form
+                  onSubmit={handleSubmit(handleCreateAssignment)}
+                  className="space-y-4"
+                >
                   <div>
                     <Label htmlFor="title">Assignment Title</Label>
-                    <Input {...register('title', { required: true })} placeholder="Enter assignment title" />
+                    <Input
+                      {...register("title", { required: true })}
+                      placeholder="Enter assignment title"
+                    />
                   </div>
                   <div>
                     <Label htmlFor="deadline">Assignment Deadline</Label>
-                    <Input {...register('deadline', { required: true })} type="datetime-local" />
+                    <Input
+                      {...register("deadline", { required: true })}
+                      type="datetime-local"
+                    />
                   </div>
                   <div>
                     <Label htmlFor="description">Assignment Description</Label>
-                    <Textarea {...register('description', { required: true })} placeholder="Describe the assignment" />
+                    <Textarea
+                      {...register("description", { required: true })}
+                      placeholder="Describe the assignment"
+                    />
                   </div>
-                  <Button type="submit" className="w-full" disabled={createAssignmentMutation.isPending}>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={createAssignmentMutation.isPending}
+                  >
                     Create Assignment
                   </Button>
                 </form>
@@ -158,11 +200,13 @@ const ClassDetails = () => {
         <CardContent>
           {assignments.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No assignments created yet</p>
+              <p className="text-muted-foreground">
+                No assignments created yet
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
-              {assignments.map((assignment: any, index: number) => (
+              {assignments.map((assignment: Assignment, index: number) => (
                 <motion.div
                   key={assignment._id}
                   initial={{ opacity: 0, y: 20 }}
@@ -172,22 +216,31 @@ const ClassDetails = () => {
                   <Card className="border-l-4 border-l-primary">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">{assignment.title}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {assignment.title}
+                        </CardTitle>
                         <span className="text-sm text-muted-foreground">
-                          Due: {new Date(assignment.deadline).toLocaleDateString()}
+                          Due:{" "}
+                          {new Date(assignment.deadline).toLocaleDateString()}
                         </span>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground mb-2">{assignment.description}</p>
+                      <p className="text-muted-foreground mb-2">
+                        {assignment.description}
+                      </p>
                       <div className="flex items-center justify-between text-sm">
                         <span>Submissions: {assignment.submissions || 0}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          new Date(assignment.deadline) > new Date() 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : 'bg-red-500/20 text-red-400'
-                        }`}>
-                          {new Date(assignment.deadline) > new Date() ? 'Active' : 'Expired'}
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs ${
+                            new Date(assignment.deadline) > new Date()
+                              ? "bg-green-500/20 text-green-400"
+                              : "bg-red-500/20 text-red-400"
+                          }`}
+                        >
+                          {new Date(assignment.deadline) > new Date()
+                            ? "Active"
+                            : "Expired"}
                         </span>
                       </div>
                     </CardContent>

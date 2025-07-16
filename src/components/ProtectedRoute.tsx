@@ -1,33 +1,26 @@
-import React from "react";
 import { Navigate, useLocation } from "react-router";
+import LoadingSpiner from "./LoadingSpiner";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { setLoading } from "@/store/slices/authSlice";
-
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-  requiredRole?: "student" | "teacher" | "admin";
-}
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   requiredRole,
 }) => {
-  const { isAuthenticated, user } = useSelector(
+  const { isAuthenticated, user, isLoading } = useSelector(
     (state: RootState) => state.auth
   );
   const location = useLocation();
 
+  // ⛔️ Wait until loading is done
+  if (isLoading) return <LoadingSpiner />;
+
+  // ❌ Redirect only after we are sure it's not loading
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={location.pathname} />;
   }
 
   if (requiredRole && user?.role !== requiredRole) {
     return <Navigate to="/unauthorized" replace />;
-  }
-
-  if (!user) {
-    setLoading(true);
   }
 
   return <>{children}</>;
