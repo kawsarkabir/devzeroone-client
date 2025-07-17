@@ -7,9 +7,9 @@ import { mockCourses } from "@/data/mockData";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getPopularCourses } from "@/services/classService";
+import { toast } from "sonner";
 
 const PopularCourses = () => {
-  
   const {
     data: popularCourses,
     isLoading,

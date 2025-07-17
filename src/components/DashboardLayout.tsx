@@ -1,24 +1,25 @@
-import React from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
-import { motion } from 'framer-motion';
-import { 
-  User, 
-  BookOpen, 
-  Users, 
-  Settings, 
-  LogOut, 
-  Plus, 
+import React from "react";
+import { Outlet, NavLink, useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+import {
+  User,
+  BookOpen,
+  Users,
+  Settings,
+  LogOut,
+  Plus,
   GraduationCap,
   Shield,
   FileText,
-  BarChart
-} from 'lucide-react';
-import { Button } from './ui/button';
-import { RootState } from '../store/store';
-import { clearUser } from '../store/slices/authSlice';
-import { logout } from '../services/authService';
-import Swal from 'sweetalert2';
+  BarChart,
+} from "lucide-react";
+import { Button } from "./ui/button";
+import { RootState } from "../store/store";
+import { clearUser } from "../store/slices/authSlice";
+import { logout } from "../services/authService";
+import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 const DashboardLayout = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -29,46 +30,51 @@ const DashboardLayout = () => {
     try {
       await logout();
       dispatch(clearUser());
-      navigate('/');
-      Swal.fire({
-        title: 'Success!',
-        text: 'Logged out successfully',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
+      navigate("/");
+      toast.success("Logged out successfully");
     } catch (error) {
-      console.error('Logout error:', error);
+      toast.error("Logout error:", error);
     }
   };
 
   const getNavItems = () => {
     const commonItems = [
-      { name: 'Dashboard', path: '/dashboard', icon: BarChart },
+      { name: "Dashboard", path: "/dashboard", icon: BarChart },
     ];
 
     switch (user?.role) {
-      case 'student':
+      case "student":
         return [
           ...commonItems,
-          { name: 'My Enrolled Classes', path: '/dashboard/my-enrolled-classes', icon: BookOpen },
-          { name: 'Profile', path: '/dashboard/profile', icon: User },
+          {
+            name: "My Enrolled Classes",
+            path: "/dashboard/my-enrolled-classes",
+            icon: BookOpen,
+          },
+          { name: "Profile", path: "/dashboard/profile", icon: User },
         ];
-      case 'teacher':
+      case "teacher":
         return [
           ...commonItems,
-          { name: 'Add Class', path: '/dashboard/add-class', icon: Plus },
-          { name: 'My Classes', path: '/dashboard/my-classes', icon: BookOpen },
-          { name: 'Profile', path: '/dashboard/profile', icon: User },
+          { name: "Add Class", path: "/dashboard/add-class", icon: Plus },
+          { name: "My Classes", path: "/dashboard/my-classes", icon: BookOpen },
+          { name: "Profile", path: "/dashboard/profile", icon: User },
         ];
-      case 'admin':
+      case "admin":
         return [
           ...commonItems,
-          { name: 'Teacher Requests', path: '/dashboard/teacher-requests', icon: GraduationCap },
-          { name: 'Users', path: '/dashboard/users', icon: Users },
-          { name: 'All Classes', path: '/dashboard/all-classes', icon: BookOpen },
-          { name: 'Profile', path: '/dashboard/profile', icon: User },
+          {
+            name: "Teacher Requests",
+            path: "/dashboard/teacher-requests",
+            icon: GraduationCap,
+          },
+          { name: "Users", path: "/dashboard/users", icon: Users },
+          {
+            name: "Courses",
+            path: "/dashboard/courses",
+            icon: BookOpen,
+          },
+          { name: "Profile", path: "/dashboard/profile", icon: User },
         ];
       default:
         return commonItems;
@@ -80,7 +86,7 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-section flex">
       {/* Sidebar */}
-      <motion.aside 
+      <motion.aside
         initial={{ x: -300 }}
         animate={{ x: 0 }}
         className="w-64 bg-card border-r border-border/50 flex flex-col"
@@ -92,7 +98,9 @@ const DashboardLayout = () => {
             </div>
             <div>
               <h2 className="text-lg font-bold text-gradient">DEVZeroOne</h2>
-              <p className="text-sm text-muted-foreground capitalize">{user?.role} Dashboard</p>
+              <p className="text-sm text-muted-foreground capitalize">
+                {user?.role} Dashboard
+              </p>
             </div>
           </div>
         </div>
@@ -105,8 +113,8 @@ const DashboardLayout = () => {
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-primary/10 text-primary border border-primary/20'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card-hover'
+                    ? "bg-primary/10 text-primary border border-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-card-hover"
                 }`
               }
             >

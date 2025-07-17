@@ -108,7 +108,7 @@ const App = () => (
                     element={<TeacherRequests />}
                   />
                   <Route path="users" element={<Users />} />
-                  <Route path="all-classes" element={<AllClassesAdmin />} />
+                  <Route path="courses" element={<AllClassesAdmin />} />
                   <Route path="class-progress/:id" element={<ClassDetails />} />
 
                   {/* Common Routes */}

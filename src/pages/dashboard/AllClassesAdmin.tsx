@@ -1,105 +1,72 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { CheckCircle, XCircle, Eye } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { getAllClasses, approveClass, rejectClass } from '@/services/classService';
-import { Link } from 'react-router';
-import Swal from 'sweetalert2';
+import React from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Eye, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  approveClass,
+  getAllClasses,
+  rejectClass,
+} from "@/services/classService";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AllClassesAdmin = () => {
   const queryClient = useQueryClient();
 
   const { data: classes = [], isLoading } = useQuery({
-    queryKey: ['admin-all-classes'],
-    queryFn: getAllClasses
+    queryKey: ["admin-all-classes"],
+    queryFn: getAllClasses,
   });
 
   const approveMutation = useMutation({
     mutationFn: approveClass,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-all-classes'] });
-      Swal.fire({
-        title: 'Success!',
-        text: 'Class approved successfully',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
+      queryClient.invalidateQueries({ queryKey: ["admin-all-classes"] });
+      toast.success("Class approved successfully");
     },
-    onError: () => {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Failed to approve class',
-        icon: 'error',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
-    }
+    onError: () => toast.error("Failed to approve class"),
   });
 
   const rejectMutation = useMutation({
     mutationFn: rejectClass,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-all-classes'] });
-      Swal.fire({
-        title: 'Success!',
-        text: 'Class rejected',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
+      queryClient.invalidateQueries({ queryKey: ["admin-all-classes"] });
+      toast.success("Class rejected");
     },
-    onError: () => {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Failed to reject class',
-        icon: 'error',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
-    }
+    onError: () => toast.error("Failed to reject class"),
   });
 
-  const handleApprove = (classId: string) => {
+  const handleApprove = (id: string) => {
     Swal.fire({
-      title: 'Approve Class?',
-      text: 'This class will be visible to all students',
-      icon: 'question',
+      title: "Approve this class?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: '#0EA0E2',
-      cancelButtonColor: '#ef4444',
-      confirmButtonText: 'Yes, approve',
-      background: '#0F172A',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        approveMutation.mutate(classId);
-      }
+      confirmButtonColor: "#0EA5E9",
+      cancelButtonColor: "#EF4444",
+      confirmButtonText: "Approve",
+    }).then((res) => {
+      if (res.isConfirmed) approveMutation.mutate(id);
     });
   };
 
-  const handleReject = (classId: string) => {
+  const handleReject = (id: string) => {
     Swal.fire({
-      title: 'Reject Class?',
-      text: 'This class will not be visible to students',
-      icon: 'warning',
+      title: "Reject this class?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Yes, reject',
-      background: '#0F172A',
-      color: '#fff'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        rejectMutation.mutate(classId);
-      }
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Reject",
+    }).then((res) => {
+      if (res.isConfirmed) rejectMutation.mutate(id);
     });
   };
 
@@ -112,109 +79,97 @@ const AllClassesAdmin = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
-    >
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-gradient">All Classes</h1>
-        <p className="text-muted-foreground">Approve and manage all classes</p>
+        <h1 className="text-3xl font-bold text-gradient">All Classes</h1>
+        <p className="text-muted-foreground">Manage and approve all courses</p>
       </div>
 
       {classes.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-12">
-            <p className="text-muted-foreground">No classes found</p>
-          </CardContent>
-        </Card>
+        <p className="text-center text-muted-foreground">No classes found</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {classes.map((classItem: any, index: number) => (
-            <motion.div
-              key={classItem._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="h-full">
-                <CardHeader>
-                  <img
-                    src={classItem.image || '/placeholder.svg'}
-                    alt={classItem.title}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                  <CardTitle className="text-lg">{classItem.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground">by {classItem.instructor}</p>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {classItem.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold text-primary">${classItem.price}</p>
-                    <Badge 
+        <div className="overflow-x-auto rounded-lg border">
+          <table className="min-w-full text-sm">
+            <thead className="bg-secondary">
+              <tr>
+                <th className="text-left p-4">Course</th>
+                <th className="text-left p-4">Instructor</th>
+                <th className="text-left p-4">Price</th>
+                <th className="text-left p-4">Status</th>
+                <th className="text-right p-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {classes.map((course: any) => (
+                <tr
+                  key={course._id}
+                  className="border-t hover:bg-muted transition-colors"
+                >
+                  <td className="p-4 font-medium">{course.title}</td>
+                  <td className="p-4">{course.instructor}</td>
+                  <td className="p-4">${course.price}</td>
+                  <td className="p-4">
+                    <Badge
                       variant={
-                        classItem.status === 'approved' ? 'default' :
-                        classItem.status === 'rejected' ? 'destructive' : 'secondary'
+                        course.status === "approved"
+                          ? "default"
+                          : course.status === "rejected"
+                          ? "destructive"
+                          : "secondary"
                       }
-                      className="capitalize"
                     >
-                      {classItem.status}
+                      {course.status}
                     </Badge>
-                  </div>
-
-                  <div className="flex flex-col space-y-2">
-                    {classItem.status === 'pending' && (
-                      <div className="flex space-x-2">
-                        <Button
-                          onClick={() => handleApprove(classItem._id)}
-                          className="flex-1"
-                          disabled={approveMutation.isPending}
-                        >
-                          <CheckCircle className="w-4 h-4 mr-2" />
-                          Approve
+                  </td>
+                  <td className="p-4 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="w-5 h-5" />
                         </Button>
-                        <Button
-                          onClick={() => handleReject(classItem._id)}
-                          variant="destructive"
-                          className="flex-1"
-                          disabled={rejectMutation.isPending}
-                        >
-                          <XCircle className="w-4 h-4 mr-2" />
-                          Reject
-                        </Button>
-                      </div>
-                    )}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {course.status === "pending" && (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => handleApprove(course._id)}
+                            >
+                              ✅ Approve
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleReject(course._id)}
+                            >
+                              ❌ Reject
+                            </DropdownMenuItem>
+                          </>
+                        )}
 
-                    {classItem.status === 'rejected' && (
-                      <Button
-                        onClick={() => handleApprove(classItem._id)}
-                        className="w-full"
-                        disabled={approveMutation.isPending}
-                      >
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Approve
-                      </Button>
-                    )}
+                        {course.status === "rejected" && (
+                          <DropdownMenuItem
+                            onClick={() => handleApprove(course._id)}
+                          >
+                            ✅ Approve
+                          </DropdownMenuItem>
+                        )}
 
-                    {classItem.status === 'approved' && (
-                      <Link to={`/dashboard/class-progress/${classItem._id}`}>
-                        <Button className="w-full">
-                          <Eye className="w-4 h-4 mr-2" />
-                          View Progress
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                        {course.status === "approved" && (
+                          <Link to={`/dashboard/class-progress/${course._id}`}>
+                            <DropdownMenuItem>
+                              <Eye className="w-4 h-4 mr-2" />
+                              View Progress
+                            </DropdownMenuItem>
+                          </Link>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 

@@ -61,13 +61,17 @@ export const deleteClass = async (id: string) => {
 };
 
 export const approveClass = async (id: string) => {
-  const response = await api.patch(`/courses/${id}/approve`);
-  return response.data.data;
+  const response = await api.patch(`/courses/status/${id}`, {
+    status: "approved",
+  });
+  return response.data;
 };
 
 export const rejectClass = async (id: string) => {
-  const response = await api.patch(`/courses/${id}/reject`);
-  return response.data.data;
+  const response = await api.patch(`/courses/status/${id}`, {
+    status: "rejected",
+  });
+  return response.data;
 };
 
 export const enrollInClass = async (courseId: string) => {
