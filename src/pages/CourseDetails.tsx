@@ -62,7 +62,7 @@ const CourseDetails = () => {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <Link to="/classes">
+          <Link to="/courses">
             <Button variant="outline" className="mb-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Courses
@@ -237,7 +237,7 @@ const CourseDetails = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Duration:</span>
-                      <span>8 weeks</span>
+                      <span>{course.duration}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Category:</span>

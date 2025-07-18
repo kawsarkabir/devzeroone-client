@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   approveClass,
+  Class,
   getAllClasses,
   rejectClass,
 } from "@/services/classService";
@@ -100,7 +101,7 @@ const AllClassesAdmin = () => {
               </tr>
             </thead>
             <tbody>
-              {classes.map((course: any) => (
+              {classes.map((course: Class) => (
                 <tr
                   key={course._id}
                   className="border-t hover:bg-muted transition-colors"

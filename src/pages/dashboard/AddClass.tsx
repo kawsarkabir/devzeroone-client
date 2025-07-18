@@ -38,6 +38,7 @@ const categories = [
   "Cloud Computing",
   "Artificial Intelligence",
 ];
+const levels = ["Beginner", "Intermediate", "Advanced"];
 
 const AddClass = () => {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ const AddClass = () => {
       ...data,
       name: user.name,
       email: user.email,
+      instructorImage: user.photoURL,
     });
   };
 
@@ -183,13 +185,75 @@ const AddClass = () => {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Course Duration
+                  </label>
+                  <Input
+                    type="text"
+                    {...register("duration", {
+                      required: "Duration is required",
+                    })}
+                    placeholder="Enter course duration"
+                  />
+                  {errors.duration && (
+                    <p className="text-destructive text-sm mt-1">
+                      {errors.duration.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  {errors.duration && (
+                    <p className="text-destructive text-sm mt-1">
+                      {errors.duration.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Level</label>
+                <Controller
+                  name="level"
+                  control={control}
+                  rules={{ required: "Level is required" }}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Course Level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {levels.map((level) => (
+                          <SelectItem key={level} value={level}>
+                            {level}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.level && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.level.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium mb-2">
-                Class Image URL
+                Course Image Cover
               </label>
               <Input
-                {...register("image", { required: "Image URL is required" })}
-                placeholder="Enter image URL"
+                {...register("image", {
+                  required: "Course Image Cover is required",
+                })}
+                placeholder="Enter Course Image Cover URL"
               />
               {errors.image && (
                 <p className="text-destructive text-sm mt-1">

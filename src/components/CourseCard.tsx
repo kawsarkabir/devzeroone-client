@@ -76,7 +76,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
 
         {/* Description */}
         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-          {course.shortDescription}
+          {course.description}
         </p>
 
         {/* Stats */}
