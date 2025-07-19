@@ -1,3 +1,5 @@
+// src/services/authService.ts
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -6,12 +8,14 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth } from "@/config/firebase";
 import api from "./api";
 import { jwtDecode } from "jwt-decode";
 
+// Firebase provider
 const googleProvider = new GoogleAuthProvider();
 
+// Types
 export interface LoginData {
   email: string;
   password: string;
@@ -24,29 +28,7 @@ export interface RegisterData {
   photoURL?: string;
 }
 
-export const loginWithEmail = async (data: LoginData) => {
-  try {
-    const result = await signInWithEmailAndPassword(
-      auth,
-      data.email,
-      data.password
-    );
-    const token = await result.user.getIdToken();
-    localStorage.setItem("token", token);
-
-    // Send token to backend for JWT generation
-    const response = await api.post("/auth/login", {
-      firebaseToken: token,
-      email: data.email,
-    });
-
-    localStorage.setItem("token", response.data.token);
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};
-
+// Register with email and password
 export const registerWithEmail = async (data: RegisterData) => {
   try {
     const result = await createUserWithEmailAndPassword(
@@ -62,13 +44,12 @@ export const registerWithEmail = async (data: RegisterData) => {
 
     const token = await result.user.getIdToken();
 
-    // Send user data to backend
     const response = await api.post("/auth/register", {
       firebaseToken: token,
       name: data.name,
       email: data.email,
       photoURL: data.photoURL || "",
-      role: "student",
+      role: "student", // default role
     });
 
     localStorage.setItem("token", response.data.token);
@@ -78,6 +59,25 @@ export const registerWithEmail = async (data: RegisterData) => {
   }
 };
 
+// Login with email/password
+export const loginWithEmail = async ({ email, password }: LoginData) => {
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    const token = await result.user.getIdToken();
+
+    const response = await api.post("/auth/login", {
+      firebaseToken: token,
+      email,
+    });
+
+    localStorage.setItem("token", response.data.token);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+// Login with Google
 export const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -98,15 +98,15 @@ export const loginWithGoogle = async () => {
   }
 };
 
+// Logout
 export const logout = async () => {
-  try {
-    await signOut(auth);
-    localStorage.removeItem("token");
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
+  await signOut(auth);
+
+  localStorage.removeItem("token");
+  return { success: true };
 };
 
+// Decode current user from token
 export const getCurrentUser = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -120,6 +120,7 @@ export const getCurrentUser = () => {
   }
 };
 
+// Token validity checker
 export const isTokenValid = () => {
   const token = localStorage.getItem("token");
   if (!token) return false;
@@ -131,6 +132,3 @@ export const isTokenValid = () => {
     return false;
   }
 };
-
-// LISTENER: Auth state listener
- 

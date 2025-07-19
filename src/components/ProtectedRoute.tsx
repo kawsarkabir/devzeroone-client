@@ -15,13 +15,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (isLoading) return <LoadingSpiner />;
 
   // ❌ Redirect only after we are sure it's not loading
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" state={location.pathname} />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={location.pathname} />;
+  }
 
-  // if (requiredRole && user?.role !== requiredRole) {
-  //   return <Navigate to="/unauthorized" replace />;
-  // }
+  if (requiredRole && user?.role !== requiredRole) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return <>{children}</>;
 };
