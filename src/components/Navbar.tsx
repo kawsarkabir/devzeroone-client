@@ -1,22 +1,36 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Menu, X, User, ChevronDown, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { logout } from "@/services/authService";
+import { toast } from "sonner";
+import { auth } from "@/config/firebase";
+import { useAppDispatch } from "@/store/hooks";
+import { clearUser } from "@/store/slices/authSlice";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
   );
+  const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    try {
+      await logout(auth);
+      dispatch(clearUser()); // remove user from redux state
+      toast.success("Logout successful"); // show toast
+      navigate("/");
+    } catch (error) {
+      toast.error("Logout failed");
+      console.error(error);
+    }
   };
   const navItems = [
     { name: "Home", path: "/" },

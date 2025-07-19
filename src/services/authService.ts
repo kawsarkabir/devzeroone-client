@@ -46,16 +46,17 @@ export const registerWithEmail = async (data: RegisterData) => {
 
     const response = await api.post("/auth/register", {
       firebaseToken: token,
+      firebaseUid: result.user.uid,
       name: data.name,
       email: data.email,
       photoURL: data.photoURL || "",
-      role: "student", // default role
+      role: "student",
     });
 
     localStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
@@ -73,7 +74,7 @@ export const loginWithEmail = async ({ email, password }: LoginData) => {
     localStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
@@ -85,6 +86,7 @@ export const loginWithGoogle = async () => {
 
     const response = await api.post("/auth/google-login", {
       firebaseToken: token,
+      firebaseUid: result.user.uid,
       name: result.user.displayName,
       email: result.user.email,
       photoURL: result.user.photoURL,
@@ -94,22 +96,21 @@ export const loginWithGoogle = async () => {
     localStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.message);
+    throw new Error(error.response?.data?.message || error.message);
   }
 };
 
 // Logout
 export const logout = async () => {
   await signOut(auth);
-
   localStorage.removeItem("token");
-  return { success: true };
 };
 
 // Decode current user from token
 export const getCurrentUser = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
+  console.log(token);
 
   try {
     const decoded: any = jwtDecode(token);

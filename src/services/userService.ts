@@ -21,14 +21,19 @@ export interface TeacherRequest {
   userId: string;
 }
 
+// export const getAllUsers = async () => {
+//   try {
+//     const res = await api.get("/users");
+//     return res.data || [];
+//   } catch (error) {
+//     console.error("Error fetching users:", error);
+//     return [];
+//   }
+// };
+
 export const getAllUsers = async () => {
-  try {
-    const res = await api.get("/users");
-    return res.data || [];
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    return [];
-  }
+  const response = await api.get("/users");
+  return response.data || [];
 };
 
 export const makeAdmin = async (userId: string) => {
@@ -76,5 +81,3 @@ export const getMyTeacherRequest = async () => {
   const response = await api.get("/users/my-teacher-request");
   return response.data;
 };
-
-///

@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import { loginWithEmail } from "../services/authService";
+import { useNavigate } from "react-router-dom"; // ✅ FIXED: use react-router-dom
+import { loginWithEmail, loginWithGoogle } from "../services/authService"; // ✅ Add Google function
 import { setUser } from "../store/slices/authSlice";
 import { toast } from "sonner";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router";
+import { Link } from "react-router-dom"; // ✅ FIXED: use react-router-dom
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,20 +28,40 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Email/password login
   const loginMutation = useMutation({
     mutationFn: loginWithEmail,
     onSuccess: (data) => {
       dispatch(setUser(data.user));
-      navigate("/dashboard");
+      localStorage.setItem("token", data.token); // ✅ Optional: store token
       toast.success("Logged in successfully");
+      navigate("/dashboard");
     },
     onError: (error: any) => {
-      toast.error(error.message || "Login failed");
+      toast.error(error?.response?.data?.message || "Login failed");
+    },
+  });
+
+  // Google login
+  const googleLoginMutation = useMutation({
+    mutationFn: loginWithGoogle,
+    onSuccess: (data) => {
+      dispatch(setUser(data.user));
+      localStorage.setItem("token", data.token); // ✅ Optional
+      toast.success("Logged in with Google");
+      navigate("/dashboard");
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Google sign-in failed");
     },
   });
 
   const onSubmit = (data: LoginForm) => {
     loginMutation.mutate(data);
+  };
+
+  const handleGoogleLogin = () => {
+    googleLoginMutation.mutate();
   };
 
   return (
@@ -57,23 +77,22 @@ const LoginPage = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-xl">D</span>
                 </div>
                 <span className="text-xl font-bold text-gradient">
                   DEVZeroOne
                 </span>
               </Link>
-
               <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
               <p className="text-muted-foreground">
                 Sign in to your account to continue learning
               </p>
             </div>
 
-            {/* Login Form */}
+            {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Email Field */}
+              {/* Email */}
               <div>
                 <label className="block text-sm font-medium mb-2">Email</label>
                 <div className="relative">
@@ -98,7 +117,7 @@ const LoginPage = () => {
                 )}
               </div>
 
-              {/* Password Field */}
+              {/* Password */}
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Password
@@ -136,20 +155,7 @@ const LoginPage = () => {
                 )}
               </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded border-border" />
-                  <span className="text-sm text-muted-foreground">
-                    Remember me
-                  </span>
-                </label>
-                <Link to="#" className="text-sm text-primary hover:underline">
-                  Forgot password?
-                </Link>
-              </div>
-
-              {/* Submit Button */}
+              {/* Submit */}
               <Button
                 type="submit"
                 className="w-full btn-bounce glow-primary"
@@ -171,8 +177,13 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Google Sign In */}
-            <Button variant="outline" className="w-full btn-bounce">
+            {/* Google */}
+            <Button
+              variant="outline"
+              className="w-full btn-bounce"
+              onClick={handleGoogleLogin}
+              disabled={googleLoginMutation.isPending}
+            >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -191,12 +202,14 @@ const LoginPage = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              {googleLoginMutation.isPending
+                ? "Signing in with Google..."
+                : "Continue with Google"}
             </Button>
 
-            {/* Sign Up Link */}
+            {/* Sign Up */}
             <p className="text-center text-sm text-muted-foreground mt-6">
-              Don't have an account?
+              Don’t have an account?{" "}
               <Link
                 to="/register"
                 className="text-primary hover:underline font-medium"

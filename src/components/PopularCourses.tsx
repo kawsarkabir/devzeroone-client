@@ -8,6 +8,7 @@ import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getPopularCourses } from "@/services/classService";
 import { toast } from "sonner";
+import LoadingSpiner from "./LoadingSpiner";
 
 const PopularCourses = () => {
   const {
@@ -20,8 +21,7 @@ const PopularCourses = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  console.log(popularCourses);
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpiner />;
   if (error) {
     toast.error("Failed to load popular courses");
     return <p>Error loading courses.</p>;
