@@ -1,16 +1,17 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
-import { getProfile, updateProfile } from '../../services/userService';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { useForm } from 'react-hook-form';
-import { RootState } from '../../store/store';
-import Swal from 'sweetalert2';
-import { User, Mail, Phone, Shield } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { getProfile, updateProfile } from "../../services/userService";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { useForm } from "react-hook-form";
+import { RootState } from "../../store/store";
+import Swal from "sweetalert2";
+import { User, Mail, Phone, Shield } from "lucide-react";
+import { toast } from "sonner";
 
 interface ProfileForm {
   name: string;
@@ -22,44 +23,35 @@ const Profile = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const queryClient = useQueryClient();
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileForm>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileForm>();
 
   const { data: profile, isLoading } = useQuery({
-    queryKey: ['profile'],
-    queryFn: getProfile
+    queryKey: ["profile"],
+    queryFn: getProfile,
   });
 
   const updateMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      Swal.fire({
-        title: 'Success!',
-        text: 'Profile updated successfully',
-        icon: 'success',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Profile updated successfully");
     },
     onError: (error: any) => {
-      Swal.fire({
-        title: 'Error!',
-        text: error.message,
-        icon: 'error',
-        background: '#0F172A',
-        color: '#fff',
-        confirmButtonColor: '#0EA0E2'
-      });
-    }
+      toast.error("Failed to update profile: " + error.message);
+    },
   });
 
   React.useEffect(() => {
     if (profile) {
       reset({
         name: profile.name,
-        phone: profile.phone || '',
-        image: profile.image || ''
+        phone: profile.phone || "",
+        image: profile.image || "",
       });
     }
   }, [profile, reset]);
@@ -125,17 +117,19 @@ const Profile = () => {
                 <Mail className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm">{profile?.email}</span>
               </div>
-              
+
               {profile?.phone && (
                 <div className="flex items-center space-x-3">
                   <Phone className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">{profile.phone}</span>
                 </div>
               )}
-              
+
               <div className="flex items-center space-x-3">
                 <Shield className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm capitalize">{profile?.role} Account</span>
+                <span className="text-sm capitalize">
+                  {profile?.role} Account
+                </span>
               </div>
             </div>
           </CardContent>
@@ -150,40 +144,45 @@ const Profile = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Full Name</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Full Name
+                  </label>
                   <Input
-                    {...register('name', { required: 'Name is required' })}
+                    {...register("name", { required: "Name is required" })}
                     placeholder="Enter your full name"
                   />
                   {errors.name && (
-                    <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
+                    <p className="text-destructive text-sm mt-1">
+                      {errors.name.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <Input
-                    value={profile?.email}
-                    disabled
-                    className="bg-muted"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">Email cannot be changed</p>
+                  <label className="block text-sm font-medium mb-2">
+                    Email
+                  </label>
+                  <Input value={profile?.email} disabled className="bg-muted" />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Email cannot be changed
+                  </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Phone (Optional)</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Phone Number
+                  </label>
                   <Input
-                    {...register('phone')}
+                    {...register("phone")}
                     placeholder="Enter your phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Profile Image URL (Optional)</label>
-                  <Input
-                    {...register('image')}
-                    placeholder="Enter image URL"
-                  />
+                  <label className="block text-sm font-medium mb-2">
+                    Upload Your Picture
+                  </label>
+                  <Input {...register("image")} placeholder="Enter image URL" />
                 </div>
               </div>
 
@@ -200,12 +199,12 @@ const Profile = () => {
               </div>
 
               <div className="flex justify-end">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={updateMutation.isPending}
                   className="btn-bounce"
                 >
-                  {updateMutation.isPending ? 'Updating...' : 'Update Profile'}
+                  {updateMutation.isPending ? "Updating..." : "Update Profile"}
                 </Button>
               </div>
             </form>

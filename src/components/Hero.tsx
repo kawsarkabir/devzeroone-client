@@ -95,7 +95,7 @@ const Hero = () => {
                 size="lg"
                 className="btn-bounce glow-primary text-lg px-8 py-6"
               >
-                <Link to="/classes">
+                <Link to="/courses">
                   Get Started <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
@@ -103,7 +103,7 @@ const Hero = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="btn-bounce text-lg px-8 py-6 border-primary/30 hover:bg-primary/10"
+                className="btn-bounce text-lg px-8 py-6 border-primary/30 hover:bg-primary/10 cursor-pointer"
               >
                 <Play className="mr-2 w-5 h-5" />
                 Watch Demo

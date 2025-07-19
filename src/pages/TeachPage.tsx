@@ -1,47 +1,55 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Lightbulb, Users, DollarSign, Award, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { motion } from "framer-motion";
+import { Lightbulb, Users, DollarSign, Award, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import ApplyToTeachModal from "@/components/ApplyToTeachModal";
 
 const TeachPage = () => {
   const benefits = [
     {
       icon: DollarSign,
-      title: 'Earn Money',
-      description: 'Make money by teaching what you know. Create courses and earn from each enrollment.',
+      title: "Earn Money",
+      description:
+        "Make money by teaching what you know. Create courses and earn from each enrollment.",
     },
     {
       icon: Users,
-      title: 'Reach Students Worldwide',
-      description: 'Share your expertise with students from around the globe and build a following.',
+      title: "Reach Students Worldwide",
+      description:
+        "Share your expertise with students from around the globe and build a following.",
     },
     {
       icon: Award,
-      title: 'Get Recognition',
-      description: 'Build your reputation as an expert in your field and establish your authority.',
+      title: "Get Recognition",
+      description:
+        "Build your reputation as an expert in your field and establish your authority.",
     },
   ];
 
   const steps = [
     {
-      number: '01',
-      title: 'Apply to Teach',
-      description: 'Fill out our instructor application form with your experience and expertise.',
+      number: "01",
+      title: "Apply to Teach",
+      description:
+        "Fill out our instructor application form with your experience and expertise.",
     },
     {
-      number: '02',
-      title: 'Get Approved',
-      description: 'Our team will review your application and approve qualified instructors.',
+      number: "02",
+      title: "Get Approved",
+      description:
+        "Our team will review your application and approve qualified instructors.",
     },
     {
-      number: '03',
-      title: 'Create Courses',
-      description: 'Use our course creation tools to build engaging learning experiences.',
+      number: "03",
+      title: "Create Courses",
+      description:
+        "Use our course creation tools to build engaging learning experiences.",
     },
     {
-      number: '04',
-      title: 'Start Earning',
-      description: 'Publish your courses and start earning money from student enrollments.',
+      number: "04",
+      title: "Start Earning",
+      description:
+        "Publish your courses and start earning money from student enrollments.",
     },
   ];
 
@@ -59,23 +67,22 @@ const TeachPage = () => {
             <Lightbulb className="w-4 h-4 mr-2" />
             Become an Instructor
           </div>
-          
+
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             Teach on <span className="text-gradient">DEVZeroOne</span>
           </h1>
-          
+
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Share your knowledge with millions of students around the world. 
-            Create courses, build your brand, and earn money doing what you love.
+            Share your knowledge with millions of students around the world.
+            Create courses, build your brand, and earn money doing what you
+            love.
           </p>
-          
-          <Button size="lg" className="btn-bounce glow-primary text-lg px-8 py-6">
-            Start Teaching Today
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          {/* APPLY FOR TEACH MODAL */}
+          <ApplyToTeachModal />
         </motion.div>
 
         {/* Benefits Section */}
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,7 +92,7 @@ const TeachPage = () => {
           <h2 className="text-3xl font-bold text-center mb-12">
             Why Teach on <span className="text-gradient">DEVZeroOne</span>?
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <motion.div
@@ -114,7 +121,7 @@ const TeachPage = () => {
           className="mb-20"
         >
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
               <motion.div
@@ -133,7 +140,9 @@ const TeachPage = () => {
                   )}
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">{step.description}</p>
+                <p className="text-muted-foreground text-sm">
+                  {step.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -148,14 +157,13 @@ const TeachPage = () => {
         >
           <h2 className="text-3xl font-bold mb-4">Ready to Start Teaching?</h2>
           <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of instructors who are already making a difference and earning money 
-            by sharing their knowledge on DEVZeroOne.
+            Join thousands of instructors who are already making a difference
+            and earning money by sharing their knowledge on DEVZeroOne.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-bounce glow-primary">
-              Apply to Teach
-            </Button>
+            {/* APPLY FOR TEACH MODAL */}
+            <ApplyToTeachModal />
             <Button size="lg" variant="outline">
               Learn More
             </Button>

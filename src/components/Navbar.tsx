@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router";
-import { Menu, X, User, ChevronDown, LogOut, Settings } from "lucide-react";
+import { Menu, X, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -109,7 +109,6 @@ const Navbar = () => {
                         <User className="w-4 h-4 text-white" />
                       )}
                     </div>
-                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   </motion.button>
 
                   <AnimatePresence>

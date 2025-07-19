@@ -21,16 +21,7 @@ export interface TeacherRequest {
   userId: string;
 }
 
-// export const getAllUsers = async () => {
-//   try {
-//     const res = await api.get("/users");
-//     return res.data || [];
-//   } catch (error) {
-//     console.error("Error fetching users:", error);
-//     return [];
-//   }
-// };
-
+// USER RQUESTS
 export const getAllUsers = async () => {
   const response = await api.get("/users");
   return response.data || [];
@@ -51,13 +42,12 @@ export const getProfile = async () => {
   return response.data;
 };
 
-export const submitTeacherRequest = async (
-  requestData: Omit<TeacherRequest, "_id" | "status" | "userId">
-) => {
-  const response = await api.post("/users/teacher-request", requestData);
-  return response.data;
-};
+// TEACHER REQUESTS
 
+export const submitTeacherRequest = async (data: TeacherRequest) => {
+  const res = await api.post("/users/teacher-request", data);
+  return res.data;
+};
 export const getAllTeacherRequests = async () => {
   const response = await api.get("/users/teacher-requests");
   return response.data;

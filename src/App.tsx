@@ -55,7 +55,7 @@ const App = () => (
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
 
-                {/* Protected Public (any role) */}
+                {/* Protected Public  */}
                 <Route
                   path="/courses/:id"
                   element={
@@ -90,12 +90,13 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 >
-                  {/* Default (admin by default) */}
+                  {/* Dashboard home page content */}
                   <Route index element={<DashboardHome />} />
 
                   {/* Student Routes */}
                   <Route
                     path="my-enrolled-classes"
+                    // requiredRoles={["student"]}
                     element={
                       <ProtectedRoute requiredRoles={["student"]}>
                         <MyEnrolledClasses />
