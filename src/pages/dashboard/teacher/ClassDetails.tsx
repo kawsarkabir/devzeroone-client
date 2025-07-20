@@ -175,7 +175,7 @@ const ClassDetails = () => {
                     <Label htmlFor="deadline">Assignment Deadline</Label>
                     <Input
                       {...register("deadline", { required: true })}
-                      type="datetime-local"
+                      type="date"
                     />
                   </div>
                   <div>

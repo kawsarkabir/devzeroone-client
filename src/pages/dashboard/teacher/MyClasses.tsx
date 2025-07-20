@@ -116,7 +116,7 @@ const MyClasses = () => {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {classes.map((classItem: any, index: number) => (
+          {classes?.map((classItem: any, index: number) => (
             <motion.div
               key={classItem._id}
               initial={{ opacity: 0, y: 20 }}

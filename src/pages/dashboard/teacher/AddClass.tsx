@@ -66,12 +66,12 @@ const AddClass = () => {
 
   const onSubmit = (data: ClassForm) => {
     if (!user) return;
-
+    console.log(user);
     createMutation.mutate({
       ...data,
       name: user.name,
       email: user.email,
-      instructorImage: user.photoURL,
+      instructorImage: user.image,
     });
   };
 

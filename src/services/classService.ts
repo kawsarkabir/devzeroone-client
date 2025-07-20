@@ -47,10 +47,17 @@ export const createClass = async (
   classData: Omit<Class, "_id" | "status" | "totalEnrollment" | "createdAt">
 ) => {
   const response = await api.post("/courses", classData);
+  console.log(response.data.data)
   return response.data.data;
 };
 
 // TODO: i need to complete belown all functionality frontend already ok see i need backend functinality
+export const getMyClasses = async () => {
+  const response = await api.get("/courses/my-classes");
+  console.log(response.data)
+  return response.data.data;
+};
+
 export const updateClass = async (id: string, classData: Partial<Class>) => {
   const response = await api.put(`/courses/${id}`, classData);
   return response.data.data;
@@ -82,11 +89,6 @@ export const enrollInClass = async (courseId: string) => {
 
 export const getMyEnrolledClasses = async () => {
   const response = await api.get("/courses/my-enrolled");
-  return response.data.data;
-};
-
-export const getMyClasses = async () => {
-  const response = await api.get("/courses/my-classes");
   return response.data.data;
 };
 
