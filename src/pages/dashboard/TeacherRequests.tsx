@@ -6,10 +6,10 @@ import {
   getAllTeacherRequests,
   approveTeacherRequest,
   rejectTeacherRequest,
-} from "@/services/userService"; // Assuming this path is correct
+} from "@/services/userService";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
-import LoadingSpiner from "@/components/LoadingSpiner"; // Assuming this component exists
+import LoadingSpiner from "@/components/LoadingSpiner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -162,46 +162,28 @@ const TeacherRequests = () => {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {req.status === "pending" || req.status === "rejected" ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          {req.status === "pending" && (
-                            <>
-                              <DropdownMenuItem
-                                onClick={() => handleApprove(req._id, req.name)}
-                                disabled={approveMutation.isPending}
-                              >
-                                <CheckCircle className="w-4 h-4 mr-2" /> Approve
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleReject(req._id, req.name)}
-                                disabled={rejectMutation.isPending}
-                              >
-                                <XCircle className="w-4 h-4 mr-2" /> Reject
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                          {req.status === "rejected" && (
-                            <DropdownMenuItem
-                              onClick={() => handleApprove(req._id, req.name)}
-                              disabled={approveMutation.isPending}
-                            >
-                              <CheckCircle className="w-4 h-4 mr-2" /> Approve
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      <span className="text-green-500 font-medium">
-                        Approved
-                      </span>
-                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleApprove(req._id, req.name)}
+                          disabled={approveMutation.isPending}
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" /> Approve
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleReject(req._id, req.name)}
+                          disabled={rejectMutation.isPending}
+                        >
+                          <XCircle className="w-4 h-4 mr-2" /> Reject
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}

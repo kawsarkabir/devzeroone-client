@@ -22,6 +22,7 @@ export interface TeacherRequest {
 }
 
 // USER RQUESTS
+
 export const getAllUsers = async () => {
   const response = await api.get("/users");
   return response.data || [];
@@ -44,15 +45,17 @@ export const getProfile = async () => {
 
 // TEACHER REQUESTS
 
+// done
 export const submitTeacherRequest = async (data: TeacherRequest) => {
   const res = await api.post("/users/teacher-request", data);
   return res.data;
 };
+// done
 export const getAllTeacherRequests = async () => {
   const response = await api.get("/users/teacher-requests");
   return response.data;
 };
-
+// TODO: 
 export const approveTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/approve`
@@ -60,6 +63,7 @@ export const approveTeacherRequest = async (requestId: string) => {
   return response.data;
 };
 
+// TODO: 
 export const rejectTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/reject`
