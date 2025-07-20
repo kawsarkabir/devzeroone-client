@@ -22,27 +22,27 @@ export interface Assignment {
   deadline: string;
   submissionCount: number;
 }
-
+// done
 export const getAllClasses = async () => {
   const response = await api.get("/courses");
   return response.data.data;
 };
-
+// done
 export const getPopularCourses = async () => {
   const response = await api.get("/courses/popular");
   return response.data.data;
 };
-
+// done
 export const getAllApprovedClasses = async () => {
   const response = await api.get("/courses/approved");
   return response.data.data;
 };
-
+// done
 export const getClassById = async (id: string) => {
   const response = await api.get(`/courses/${id}`);
   return response.data.data;
 };
-
+// done
 export const createClass = async (
   classData: Omit<Class, "_id" | "status" | "totalEnrollment" | "createdAt">
 ) => {
@@ -50,6 +50,7 @@ export const createClass = async (
   return response.data.data;
 };
 
+// TODO: i need to complete belown all functionality frontend already ok see i need backend functinality
 export const updateClass = async (id: string, classData: Partial<Class>) => {
   const response = await api.put(`/courses/${id}`, classData);
   return response.data.data;

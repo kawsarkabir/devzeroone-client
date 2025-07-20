@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // Use react-router-dom
+import { BrowserRouter, Routes, Route } from "react-router";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Index from "./pages/Index";
@@ -11,22 +11,23 @@ import TeachPage from "./pages/TeachPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
-import Unauthorized from "./pages/Unauthorized"; // <- Make sure you have this page
+import Unauthorized from "./pages/Unauthorized";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout";
 
 // Dashboard Pages
-import MyEnrolledClasses from "./pages/dashboard/MyEnrolledClasses";
-import MyEnrolledClassDetails from "./pages/dashboard/MyEnrolledClassDetails";
-import Profile from "./pages/dashboard/Profile";
-import AddClass from "./pages/dashboard/AddClass";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
-import TeacherRequests from "./pages/dashboard/TeacherRequests";
-import Users from "./pages/dashboard/Users";
-import AllClassesAdmin from "./pages/dashboard/AllClassesAdmin";
-import MyClasses from "./pages/dashboard/MyClasses";
-import ClassDetails from "./pages/dashboard/ClassDetails";
+import MyEnrolledClasses from "./pages/dashboard/student/MyEnrolledClassDetails";
+import MyEnrolledClassDetails from "./pages/dashboard/student/MyEnrolledClassDetails";
+import Profile from "./pages/dashboard/shared/Profile";
+import AddClass from "./pages/dashboard/teacher/AddClass";
+import AdminDashboard from "./pages/dashboard/admin/AllClassesAdmin";
+import TeacherRequests from "./pages/dashboard/teacher/TeacherRequests";
+import Users from "./pages/dashboard/shared/Users";
+import AllClassesAdmin from "./pages/dashboard/admin/AllClassesAdmin";
+import MyClasses from "./pages/dashboard/teacher/MyClasses";
+import ClassDetails from "./pages/dashboard/teacher/ClassDetails";
+
 import PaymentPage from "./pages/PaymentPage";
 import About from "./pages/About";
 import Blogs from "./pages/Blogs";

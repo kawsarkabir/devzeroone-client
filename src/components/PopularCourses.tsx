@@ -108,7 +108,7 @@ const PopularCourses = () => {
             variant="outline"
             className="btn-bounce border-primary/30 hover:bg-primary/10 text-lg px-8 py-6"
           >
-            <Link to="/classes">
+            <Link to="/courses">
               View All Courses
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
