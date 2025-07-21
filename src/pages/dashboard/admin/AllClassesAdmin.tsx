@@ -12,6 +12,7 @@ import {
   Class,
   getAllClasses,
   rejectClass,
+  deleteClass,
 } from "@/services/classService";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,29 @@ const AllClassesAdmin = () => {
       confirmButtonText: "Reject",
     }).then((res) => {
       if (res.isConfirmed) rejectMutation.mutate(id);
+    });
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteClass,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-all-classes"] });
+      toast.success("Class deleted successfully");
+    },
+    onError: () => toast.error("Failed to delete class"),
+  });
+
+  const handleDelete = (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Yes, delete it!",
+    }).then((res) => {
+      if (res.isConfirmed) deleteMutation.mutate(id);
     });
   };
 
@@ -129,7 +153,7 @@ const AllClassesAdmin = () => {
                           <MoreVertical className="w-5 h-5" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      {/* <DropdownMenuContent align="end">
                         {course.status === "pending" && (
                           <>
                             <DropdownMenuItem
@@ -144,7 +168,6 @@ const AllClassesAdmin = () => {
                             </DropdownMenuItem>
                           </>
                         )}
-
                         {course.status === "rejected" && (
                           <DropdownMenuItem
                             onClick={() => handleApprove(course._id)}
@@ -170,6 +193,53 @@ const AllClassesAdmin = () => {
                             </Link>
                           </>
                         )}
+                      </DropdownMenuContent> */}
+                      <DropdownMenuContent align="end">
+                        {course.status === "pending" && (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => handleApprove(course._id)}
+                            >
+                              ✅ Approve
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleReject(course._id)}
+                            >
+                              ❌ Reject
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                        {course.status === "rejected" && (
+                          <DropdownMenuItem
+                            onClick={() => handleApprove(course._id)}
+                          >
+                            ✅ Approve
+                          </DropdownMenuItem>
+                        )}
+                        {course.status === "approved" && (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => handleReject(course._id)}
+                            >
+                              ❌ Reject
+                            </DropdownMenuItem>
+                            <Link
+                              to={`/dashboard/class-progress/${course._id}`}
+                            >
+                              <DropdownMenuItem>
+                                <Eye className="w-4 h-4 mr-2" />
+                                View Progress
+                              </DropdownMenuItem>
+                            </Link>
+                          </>
+                        )}
+
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(course._id)}
+                          className="text-red-600 focus:text-red-700"
+                        >
+                          🗑️ Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </td>
