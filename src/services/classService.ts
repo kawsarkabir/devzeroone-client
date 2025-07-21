@@ -47,14 +47,13 @@ export const createClass = async (
   classData: Omit<Class, "_id" | "status" | "totalEnrollment" | "createdAt">
 ) => {
   const response = await api.post("/courses", classData);
-  console.log(response.data.data)
+  console.log(response.data.data);
   return response.data.data;
 };
 
-// TODO: i need to complete belown all functionality frontend already ok see i need backend functinality
 export const getMyClasses = async () => {
   const response = await api.get("/courses/my-classes");
-  console.log(response.data)
+  console.log(response.data);
   return response.data.data;
 };
 

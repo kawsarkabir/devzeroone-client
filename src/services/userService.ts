@@ -32,6 +32,15 @@ export const makeAdmin = async (userId: string) => {
   const response = await api.patch(`/users/${userId}/make-admin`);
   return response.data;
 };
+export const removeAdmin = async (userId: string) => {
+  const response = await api.patch(`/users/${userId}/remove-admin`);
+  return response.data;
+};
+
+export const deleteUser = async (userId: string) => {
+  const response = await api.delete(`/users/${userId}`);
+  return response.data;
+};
 
 export const updateProfile = async (userData: Partial<User>) => {
   const response = await api.put("/users/profile", userData);
@@ -55,7 +64,7 @@ export const getAllTeacherRequests = async () => {
   const response = await api.get("/users/teacher-requests");
   return response.data;
 };
-// TODO: 
+// TODO:
 export const approveTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/approve`
@@ -63,7 +72,7 @@ export const approveTeacherRequest = async (requestId: string) => {
   return response.data;
 };
 
-// TODO: 
+// TODO:
 export const rejectTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/reject`
