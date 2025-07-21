@@ -24,9 +24,14 @@ import {
   Assignment,
 } from "@/services/classService";
 import Swal from "sweetalert2";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const ClassDetails = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const isTeacher = user?.role === "teacher";
   const { id } = useParams();
+
   const [showCreateModal, setShowCreateModal] = useState(false);
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm();
@@ -53,24 +58,10 @@ const ClassDetails = () => {
       queryClient.invalidateQueries({ queryKey: ["class-stats", id] });
       setShowCreateModal(false);
       reset();
-      Swal.fire({
-        title: "Success!",
-        text: "Assignment created successfully",
-        icon: "success",
-        background: "#0F172A",
-        color: "#fff",
-        confirmButtonColor: "#0EA0E2",
-      });
+      toast.success("Assignment created successfully");
     },
     onError: () => {
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to create assignment",
-        icon: "error",
-        background: "#0F172A",
-        color: "#fff",
-        confirmButtonColor: "#0EA0E2",
-      });
+      toast.error("Failed to create assignment");
     },
   });
 
@@ -149,52 +140,56 @@ const ClassDetails = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Class Assignments</CardTitle>
-            <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Assignment
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-card">
-                <DialogHeader>
-                  <DialogTitle>Create New Assignment</DialogTitle>
-                </DialogHeader>
-                <form
-                  onSubmit={handleSubmit(handleCreateAssignment)}
-                  className="space-y-4"
-                >
-                  <div>
-                    <Label htmlFor="title">Assignment Title</Label>
-                    <Input
-                      {...register("title", { required: true })}
-                      placeholder="Enter assignment title"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="deadline">Assignment Deadline</Label>
-                    <Input
-                      {...register("deadline", { required: true })}
-                      type="date"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Assignment Description</Label>
-                    <Textarea
-                      {...register("description", { required: true })}
-                      placeholder="Describe the assignment"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={createAssignmentMutation.isPending}
-                  >
+            {isTeacher && (
+              <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Plus className="w-4 h-4 mr-2" />
                     Create Assignment
                   </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+                </DialogTrigger>
+                <DialogContent className="bg-card">
+                  <DialogHeader>
+                    <DialogTitle>Create New Assignment</DialogTitle>
+                  </DialogHeader>
+                  <form
+                    onSubmit={handleSubmit(handleCreateAssignment)}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <Label htmlFor="title">Assignment Title</Label>
+                      <Input
+                        {...register("title", { required: true })}
+                        placeholder="Enter assignment title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="deadline">Assignment Deadline</Label>
+                      <Input
+                        {...register("deadline", { required: true })}
+                        type="date"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="description">
+                        Assignment Description
+                      </Label>
+                      <Textarea
+                        {...register("description", { required: true })}
+                        placeholder="Describe the assignment"
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={createAssignmentMutation.isPending}
+                    >
+                      Create Assignment
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </CardHeader>
         <CardContent>

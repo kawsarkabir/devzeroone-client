@@ -53,7 +53,7 @@ export const createClass = async (
 
 export const getMyClasses = async () => {
   const response = await api.get("/courses/my-classes");
-  console.log(response.data);
+  console.log(response.data.data);
   return response.data.data;
 };
 
@@ -81,16 +81,6 @@ export const rejectClass = async (id: string) => {
   return response.data;
 };
 
-export const enrollInClass = async (courseId: string) => {
-  const response = await api.post(`/courses/${courseId}/enroll`);
-  return response.data.data;
-};
-
-export const getMyEnrolledClasses = async () => {
-  const response = await api.get("/courses/my-enrolled");
-  return response.data.data;
-};
-
 export const getClassAssignments = async (courseId: string) => {
   const response = await api.get(`/courses/${courseId}/assignments`);
   return response.data.data;
@@ -104,6 +94,7 @@ export const createAssignment = async (
     `/courses/${courseId}/assignments`,
     assignmentData
   );
+  console.log(response.data.data);
   return response.data.data;
 };
 
@@ -114,6 +105,7 @@ export const submitAssignment = async (
   const response = await api.post(`/assignments/${assignmentId}/submit`, {
     submission,
   });
+  console.log(response.data.data);
   return response.data.data;
 };
 
@@ -122,7 +114,18 @@ export const searchClasses = async (query: string) => {
   return response.data.data;
 };
 
+export const enrollInClass = async (courseId: string) => {
+  const response = await api.post(`/courses/${courseId}/enroll`);
+  return response.data.data;
+};
+
+export const getMyEnrolledClasses = async () => {
+  const response = await api.get("/courses/my-enrolled");
+  return response.data.data;
+};
+
 export const getClassStats = async (courseId: string) => {
   const response = await api.get(`/courses/${courseId}/stats`);
+  console.log(response.data.data)
   return response.data.data;
 };
