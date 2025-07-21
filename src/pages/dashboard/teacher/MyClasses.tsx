@@ -25,6 +25,7 @@ import { Label } from "@/components/ui/label";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
 import LoadingSpiner from "@/components/LoadingSpiner";
+import { uploadImageToImgBB } from "@/utils/uploadImage";
 
 const MyClasses = () => {
   const [editingClass, setEditingClass] = useState<any>(null);
@@ -67,11 +68,28 @@ const MyClasses = () => {
     setValue("title", classItem.title);
     setValue("price", classItem.price);
     setValue("description", classItem.description);
-    setValue("image", classItem.image);
   };
 
-  const handleUpdate = (data: any) => {
-    updateMutation.mutate({ id: editingClass._id, data });
+  const handleUpdate = async (data: any) => {
+    try {
+      let imageUrl = editingClass.image; // fallback to existing image
+
+      const imageFile = data.image?.[0];
+      if (imageFile) {
+        imageUrl = await uploadImageToImgBB(imageFile);
+      }
+
+      const updatedData = {
+        title: data.title,
+        price: data.price,
+        description: data.description,
+        image: imageUrl,
+      };
+
+      updateMutation.mutate({ id: editingClass._id, data: updatedData });
+    } catch (error) {
+      toast.error("Image upload failed");
+    }
   };
 
   const handleDelete = (classId: string, title: string) => {
@@ -199,8 +217,12 @@ const MyClasses = () => {
                               />
                             </div>
                             <div>
-                              <Label htmlFor="image">Image URL</Label>
-                              <Input {...register("image")} />
+                              <Label htmlFor="image">Upload Image</Label>
+                              <Input
+                                {...register("image")}
+                                type="file"
+                                accept="image/*"
+                              />
                             </div>
                             <Button
                               type="submit"

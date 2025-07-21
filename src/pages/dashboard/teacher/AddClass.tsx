@@ -19,13 +19,16 @@ import { useForm, Controller } from "react-hook-form";
 import { RootState } from "../../store/store";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
+import { uploadImageToImgBB } from "@/utils/uploadImage";
 
 interface ClassForm {
   title: string;
   price: number;
   description: string;
-  image: string;
+  image: FileList;
   category: string;
+  duration?: string;
+  level?: string;
 }
 
 const categories = [
@@ -64,15 +67,27 @@ const AddClass = () => {
     },
   });
 
-  const onSubmit = (data: ClassForm) => {
+  const onSubmit = async (data: ClassForm) => {
     if (!user) return;
-    console.log(user);
-    createMutation.mutate({
-      ...data,
-      name: user.name,
-      email: user.email,
-      instructorImage: user.image,
-    });
+
+    const imageFile = data.image?.[0];
+    if (!imageFile) {
+      toast.error("Please upload an image.");
+      return;
+    }
+
+    try {
+      const imageUrl = await uploadImageToImgBB(imageFile);
+      createMutation.mutate({
+        ...data,
+        image: imageUrl,
+        name: user.name,
+        email: user.email,
+        instructorImage: user.image,
+      });
+    } catch (error: any) {
+      toast.error(error.message || "Image upload failed");
+    }
   };
 
   return (
@@ -247,14 +262,14 @@ const AddClass = () => {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Course Image Cover
+                Upload Course Image
               </label>
-              <Input
-                {...register("image", {
-                  required: "Course Image Cover is required",
-                })}
-                placeholder="Enter Course Image Cover URL"
+              <input
+                {...register("image", { required: true })}
+                type="file"
+                accept="image/*"
               />
+
               {errors.image && (
                 <p className="text-destructive text-sm mt-1">
                   {errors.image.message}

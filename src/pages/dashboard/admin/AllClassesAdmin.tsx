@@ -16,7 +16,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Swal from "sweetalert2";
 
 const AllClassesAdmin = () => {
@@ -154,12 +154,21 @@ const AllClassesAdmin = () => {
                         )}
 
                         {course.status === "approved" && (
-                          <Link to={`/dashboard/class-progress/${course._id}`}>
-                            <DropdownMenuItem>
-                              <Eye className="w-4 h-4 mr-2" />
-                              View Progress
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => handleReject(course._id)}
+                            >
+                              ❌ Reject
                             </DropdownMenuItem>
-                          </Link>
+                            <Link
+                              to={`/dashboard/class-progress/${course._id}`}
+                            >
+                              <DropdownMenuItem>
+                                <Eye className="w-4 h-4 mr-2" />
+                                View Progress
+                              </DropdownMenuItem>
+                            </Link>
+                          </>
                         )}
                       </DropdownMenuContent>
                     </DropdownMenu>
