@@ -49,31 +49,44 @@ const experienceOptions = [
 const ApplyToTeachModal = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   console.log(user);
-  const [status, setStatus] = useState<string | null>(null);
 
   const { register, handleSubmit, reset, setValue, watch } =
     useForm<TeachFormValues>();
 
-  const { data } = useQuery({
+  const {
+    data,
+    refetch,
+    isLoading: isQueryLoading,
+  } = useQuery({
     queryKey: ["teacherRequest"],
     queryFn: getMyTeacherRequest,
     enabled: !!user && user.role !== "teacher",
+    staleTime: 0, // Always fetch fresh data
+    refetchOnMount: true, // Refetch when component mounts
+    retry: false, // Don't retry on 404 errors
   });
 
-  useEffect(() => {
+  // Determine status based on user role and teacher request data
+  const getStatus = () => {
     if (user?.role === "teacher") {
-      setStatus("approved");
-    } else if (data?.status) {
-      setStatus(data.status);
+      return "approved";
     }
-  }, [data, user]);
+    // Handle the nested data structure from your API response
+    if (data?.success && data?.data?.status) {
+      return data.data.status;
+    }
+    return null;
+  };
+
+  const status = getStatus();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: submitTeacherRequest,
     onSuccess: (res) => {
       toast.success(res.message || "Application submitted");
-      setStatus("pending");
       reset();
+      // Refetch the teacher request data to update the status
+      refetch();
     },
     onError: () => {
       toast.error("Failed to submit application");
@@ -104,7 +117,9 @@ const ApplyToTeachModal = () => {
           <DialogTitle>Apply to Become a Teacher</DialogTitle>
         </DialogHeader>
 
-        {status === "approved" ? (
+        {isQueryLoading && user?.role !== "teacher" ? (
+          <div className="text-center p-4">Loading...</div>
+        ) : status === "approved" ? (
           <div className="text-green-600 text-center p-4 font-semibold">
             ✅ You are already a teacher!
           </div>

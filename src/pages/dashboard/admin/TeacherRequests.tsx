@@ -1,4 +1,3 @@
-"use client";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, XCircle, MoreVertical } from "lucide-react";

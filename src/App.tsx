@@ -22,7 +22,7 @@ import MyEnrolledClassDetails from "./pages/dashboard/student/MyEnrolledClassDet
 import Profile from "./pages/dashboard/shared/Profile";
 import AddClass from "./pages/dashboard/teacher/AddClass";
 import AdminDashboard from "./pages/dashboard/admin/AllClassesAdmin";
-import TeacherRequests from "./pages/dashboard/teacher/TeacherRequests";
+import TeacherRequests from "./pages/dashboard/admin/TeacherRequests";
 import Users from "./pages/dashboard/shared/Users";
 import AllClassesAdmin from "./pages/dashboard/admin/AllClassesAdmin";
 import MyClasses from "./pages/dashboard/teacher/MyClasses";
