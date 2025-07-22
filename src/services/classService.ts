@@ -126,6 +126,5 @@ export const getMyEnrolledClasses = async () => {
 
 export const getClassStats = async (courseId: string) => {
   const response = await api.get(`/courses/${courseId}/stats`);
-  console.log(response.data.data)
   return response.data.data;
 };

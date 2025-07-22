@@ -57,8 +57,11 @@ export default function UpcomingWorkshops() {
               initial="hidden"
               animate="visible"
               variants={cardVariants}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
+              className=""
             >
-              <Card className="transition-all duration-300 border border-transparent hover:border-primary">
+              <Card className="bg-card rounded-xl p-6  card-hover">
                 <CardContent className="p-5 space-y-4">
                   <h3 className="text-2xl font-semibold text-secondary-theme-500">
                     {workshop.title}

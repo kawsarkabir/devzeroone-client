@@ -169,12 +169,6 @@ export const mockPartners: Partner[] = [
   },
 ];
 
-export const mockStats: Stats = {
-  totalUsers: 15420,
-  totalClasses: 156,
-  totalEnrollments: 42890,
-};
-
 export const categories = [
   "Web Development",
   "Data Science",

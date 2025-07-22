@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface Stats {
   totalUsers: number;
@@ -7,6 +7,6 @@ export interface Stats {
 }
 
 export const getStats = async (): Promise<Stats> => {
-  const response = await api.get('/stats');
+  const response = await api.get("/stats");
   return response.data;
 };
