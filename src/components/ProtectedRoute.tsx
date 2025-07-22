@@ -1,5 +1,5 @@
 // src/components/ProtectedRoute.tsx
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import LoadingSpiner from "./LoadingSpiner";

@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom"; // ✅ FIXED: use react-router-dom
-import { loginWithEmail, loginWithGoogle } from "../services/authService"; // ✅ Add Google function
+import { useNavigate } from "react-router";
+import { loginWithEmail, loginWithGoogle } from "../services/authService";
 import { setUser } from "../store/slices/authSlice";
 import { toast } from "sonner";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // ✅ FIXED: use react-router-dom
+import { Link } from "react-router";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

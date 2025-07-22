@@ -34,6 +34,7 @@ import Blogs from "./pages/Blogs";
 import Footer from "./components/Footer";
 import AuthProvider from "./providers/AuthProvider";
 import DashboardHome from "./components/DashboardHome";
+import StripeProvider from "./components/StripeProvider";
 
 const queryClient = new QueryClient();
 
@@ -69,7 +70,9 @@ const App = () => (
                   path="/payment/:id"
                   element={
                     <ProtectedRoute>
-                      <PaymentPage />
+                      <StripeProvider>
+                        <PaymentPage />
+                      </StripeProvider>
                     </ProtectedRoute>
                   }
                 />

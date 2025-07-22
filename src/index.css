@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin 'tailwindcss-animate';
 
@@ -445,4 +445,22 @@ All colors MUST be HSL for proper theming.
       box-shadow: 0 0 30px hsl(var(--glow-primary) / 0.6);
     }
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #054c6d3a;
+  border-radius: 4px;
+}
+
+.custom-scrollbar {
+  scrollbar-color: #0e9fe270 transparent;
+  scrollbar-width: thin;
 }

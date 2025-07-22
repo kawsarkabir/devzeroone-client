@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Frontend Development Basics",
+    "description": "Learn HTML, CSS & JavaScript from scratch.",
+    "date": "2025-08-10",
+    "time": "6:00 PM - 8:00 PM",
+    "instructor": "John Doe"
+  },
+  {
+    "id": 2,
+    "title": "Mastering React & Redux",
+    "description": "Build scalable frontends using React and Redux.",
+    "date": "2025-08-17",
+    "time": "5:00 PM - 7:00 PM",
+    "instructor": "Jane Smith"
+  }
+]
