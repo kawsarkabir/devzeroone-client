@@ -75,7 +75,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
         </h3>
 
         {/* Description */}
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-1">
           {course.description}
         </p>
 
