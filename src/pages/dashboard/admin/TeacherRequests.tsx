@@ -157,7 +157,7 @@ const TeacherRequests = () => {
                       }
                       className="capitalize"
                     >
-                      {req.status}
+                      {req.status === "approved" ? "accepted" : req.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
