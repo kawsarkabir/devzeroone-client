@@ -17,7 +17,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout";
 
 // Dashboard Pages
-import MyEnrolledClasses from "./pages/dashboard/student/MyEnrolledClassDetails";
+import MyEnrolledClasses from "./pages/dashboard/student/MyEnrolledClasses";
 import MyEnrolledClassDetails from "./pages/dashboard/student/MyEnrolledClassDetails";
 import Profile from "./pages/dashboard/shared/Profile";
 import AddClass from "./pages/dashboard/teacher/AddClass";

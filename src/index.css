@@ -464,3 +464,15 @@ All colors MUST be HSL for proper theming.
   scrollbar-color: #0e9fe270 transparent;
   scrollbar-width: thin;
 }
+
+.swiper-pagination-bullet {
+  @apply w-3 h-3 bg-border opacity-100;
+}
+.swiper-pagination-bullet-active {
+  @apply bg-primary;
+}
+
+.feedback-prev:hover,
+.feedback-next:hover {
+  @apply border-primary text-primary;
+}

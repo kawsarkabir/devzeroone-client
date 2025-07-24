@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  getClassById,
+  getEnrollmentById,
   getClassAssignments,
   submitAssignment,
 } from "@/services/classService";
@@ -50,6 +50,7 @@ const MyEnrolledClassDetails = () => {
   const [submissionModal, setSubmissionModal] = useState<string | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     register: registerFeedback,
@@ -66,16 +67,21 @@ const MyEnrolledClassDetails = () => {
 
   const rating = watchFeedback("rating", 0);
 
-  const { data: classData, isLoading: classLoading } = useQuery({
-    queryKey: ["class", id],
-    queryFn: () => getClassById(id!),
+  // Fetch enrollment instead of class directly
+  const { data: enrollment, isLoading: enrollmentLoading } = useQuery({
+    queryKey: ["enrollment", id],
+    queryFn: () => getEnrollmentById(id!),
     enabled: !!id,
   });
 
+  // Get class ID from enrollment
+  const classId = enrollment?.class?._id;
+
+  // Fetch assignments using class ID
   const { data: assignments = [], isLoading: assignmentsLoading } = useQuery({
-    queryKey: ["classAssignments", id],
-    queryFn: () => getClassAssignments(id!),
-    enabled: !!id,
+    queryKey: ["classAssignments", classId],
+    queryFn: () => (classId ? getClassAssignments(classId) : []),
+    enabled: !!classId,
   });
 
   const feedbackMutation = useMutation({
@@ -115,7 +121,9 @@ const MyEnrolledClassDetails = () => {
     onSuccess: () => {
       setSubmissionModal(null);
       resetSubmission();
-      queryClient.invalidateQueries({ queryKey: ["classAssignments", id] });
+      queryClient.invalidateQueries({
+        queryKey: ["classAssignments", classId],
+      });
       Swal.fire({
         title: "Success!",
         text: "Assignment submitted successfully",
@@ -138,15 +146,15 @@ const MyEnrolledClassDetails = () => {
   });
 
   const onFeedbackSubmit = (data: FeedbackForm) => {
-    if (!classData || !user) return;
+    if (!enrollment || !user) return;
 
     feedbackMutation.mutate({
       description: data.description,
       rating: data.rating,
       name: user.name,
       image: user.image || "",
-      title: classData.title,
-      classId: classData._id,
+      title: enrollment.class.title,
+      classId: enrollment.class._id,
     });
   };
 
@@ -159,19 +167,32 @@ const MyEnrolledClassDetails = () => {
     });
   };
 
-  if (classLoading || assignmentsLoading) {
+  if (enrollmentLoading || assignmentsLoading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-8 bg-card rounded w-1/3"></div>
-        <div className="h-64 bg-card rounded"></div>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  if (!classData) {
-    return <div>Class not found</div>;
+  if (!enrollment) {
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-2xl font-bold">Enrollment Not Found</h2>
+        <p className="text-muted-foreground mt-2">
+          The enrollment record you're looking for doesn't exist.
+        </p>
+        <Button
+          className="mt-4"
+          onClick={() => navigate("/dashboard/my-enrolled-classes")}
+        >
+          Back to My Classes
+        </Button>
+      </div>
+    );
   }
 
+  const classData = enrollment.class;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -190,7 +211,7 @@ const MyEnrolledClassDetails = () => {
               <div className="flex items-center space-x-4">
                 <Badge variant="secondary">{classData.category}</Badge>
                 <span className="text-sm text-muted-foreground">
-                  Instructor: {classData.name}
+                  Instructor: {classData.instructor}
                 </span>
               </div>
             </div>

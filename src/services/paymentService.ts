@@ -40,10 +40,17 @@ export const getPaymentHistory = async () => {
   return response.data;
 };
 
+// Create enrollment
 export const enrollInClass = async (
   classId: string,
-  paymentData: PaymentData
+  paymentIntentId: string
 ) => {
-  const response = await api.post("/enrollments", { classId, ...paymentData });
+  const response = await api.post("/enrollments", { classId, paymentIntentId });
   return response.data;
+};
+
+export const getMyEnrolledClasses = async () => {
+  const response = await api.get("/enrollments/my");
+  console.log(response.data.enrollments);
+  return response.data.enrollments; // Updated to match backend response
 };
