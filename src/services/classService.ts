@@ -287,6 +287,7 @@ export const submitAssignment = async (
   const response = await api.post(`/assignments/${assignmentId}/submit`, {
     submission, 
   });
+  console.log("Submitted Assignment Response:", response.data.data);
   return response.data.data; 
 }; 
 

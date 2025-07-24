@@ -133,6 +133,7 @@ const MyEnrolledClassDetails = () => {
         confirmButtonColor: "#0EA0E2",
       });
     },
+
     onError: (error: any) => {
       Swal.fire({
         title: "Error!",

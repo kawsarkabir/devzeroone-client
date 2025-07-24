@@ -50,7 +50,7 @@ const ClassDetails = () => {
     queryKey: ["class-assignments", id],
     queryFn: () => getClassAssignments(id!),
   });
-
+  console.log("assigment data: ", assignments);
   const createAssignmentMutation = useMutation({
     mutationFn: (data: Assignment) => createAssignment(id!, data),
     onSuccess: () => {
@@ -129,7 +129,13 @@ const ClassDetails = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
-              {stats?.totalSubmissions || 0}
+              {/* calculate total assignment submision */}
+
+              {assignments.reduce(
+                (total, assignment) =>
+                  total + (assignment.submissionCount || 0),
+                0
+              )}
             </div>
           </CardContent>
         </Card>
@@ -225,7 +231,9 @@ const ClassDetails = () => {
                         {assignment.description}
                       </p>
                       <div className="flex items-center justify-between text-sm">
-                        <span>Submissions: {assignment.submissions || 0}</span>
+                        <span>
+                          Submissions: {assignment.submissionCount || 0}
+                        </span>
                         <span
                           className={`px-2 py-1 rounded-full text-xs ${
                             new Date(assignment.deadline) > new Date()
