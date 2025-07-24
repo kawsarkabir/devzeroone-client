@@ -54,18 +54,26 @@ export const getProfile = async () => {
 
 // TEACHER REQUESTS
 
-// done
 export const submitTeacherRequest = async (data: TeacherRequest) => {
   const res = await api.post("/users/teacher-request", data);
   console.log(res.data);
   return res.data;
 };
-// done
+
+export const updateTeacherRequest = async (
+  requestId: string,
+  data: Partial<TeacherRequest>
+) => {
+  // Match the backend route: PUT /users/teacher-request/:id
+  const res = await api.put(`/users/teacher-request/${requestId}`, data);
+  return res.data;
+};
+
 export const getAllTeacherRequests = async () => {
   const response = await api.get("/users/teacher-requests");
   return response.data;
 };
-// TODO:
+
 export const approveTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/approve`
@@ -73,7 +81,6 @@ export const approveTeacherRequest = async (requestId: string) => {
   return response.data;
 };
 
-// TODO:
 export const rejectTeacherRequest = async (requestId: string) => {
   const response = await api.patch(
     `/users/teacher-requests/${requestId}/reject`
@@ -83,6 +90,6 @@ export const rejectTeacherRequest = async (requestId: string) => {
 
 export const getMyTeacherRequest = async () => {
   const response = await api.get("/users/my-teacher-request");
-  console.log(response.data)
+  console.log(response.data);
   return response.data;
 };

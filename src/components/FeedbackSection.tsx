@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getAllFeedback } from "@/services/feedbackService";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const FeedbackSection = () => {
-  const [sliderRef, setSliderRef] = useState<Slider | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const {
@@ -18,9 +16,58 @@ const FeedbackSection = () => {
   } = useQuery({
     queryKey: ["allFeedback"],
     queryFn: getAllFeedback,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
+
+  // Handle responsive slides
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesPerView(window.innerWidth >= 768 ? 2 : 1);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying || feedback.length <= slidesPerView) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => 
+        prev + slidesPerView >= feedback.length ? 0 : prev + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, currentIndex, feedback.length, slidesPerView]);
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 10000);
+  };
+
+  // Calculate visible slides
+  const getVisibleSlides = () => {
+    const slides = [];
+    const endIndex = Math.min(currentIndex + slidesPerView, feedback.length);
+    
+    for (let i = currentIndex; i < endIndex; i++) {
+      slides.push(feedback[i]);
+    }
+
+    // Loop around if needed
+    if (endIndex === feedback.length && slides.length < slidesPerView) {
+      for (let i = 0; i < slidesPerView - slides.length; i++) {
+        slides.push(feedback[i]);
+      }
+    }
+
+    return slides;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -39,60 +86,6 @@ const FeedbackSection = () => {
       opacity: 1,
       y: 0,
     },
-  };
-
-  // Slider settings
-  const settings = {
-    dots: true,
-    infinite: feedback.length > 1,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: isAutoPlaying && feedback.length > 1,
-    autoplaySpeed: 5000,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-    appendDots: (dots: React.ReactNode) => (
-      <div className="flex justify-center gap-2 mt-8">
-        {React.Children.map(dots, (dot, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              sliderRef?.slickGoTo(index);
-              setIsAutoPlaying(false);
-              setTimeout(() => setIsAutoPlaying(true), 10000);
-            }}
-            className={`w-3 h-3 rounded-full transition-all ${
-              sliderRef?.innerSlider?.state?.currentSlide === index
-                ? "bg-primary w-6"
-                : "bg-muted-foreground/30"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
-    ),
-    beforeChange: () => setIsAutoPlaying(true),
-  };
-
-  const nextSlide = () => {
-    sliderRef?.slickNext();
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 2000);
-  };
-
-  const prevSlide = () => {
-    sliderRef?.slickPrev();
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 2000);
   };
 
   return (
@@ -132,84 +125,82 @@ const FeedbackSection = () => {
         ) : isError || feedback.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">
-              {isError
-                ? "Failed to load feedback"
-                : "No feedback available yet"}
+              {isError ? "Failed to load feedback" : "No feedback available yet"}
             </p>
           </div>
         ) : (
           <div className="relative">
-            {/* Navigation Arrows */}
-            {feedback.length > 1 && (
-              <>
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background p-2 rounded-full shadow-md transition-all -translate-x-4 hover:scale-110"
-                  aria-label="Previous feedback"
+            {/* Slides Container */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {getVisibleSlides().map((item, index) => (
+                <motion.div
+                  key={`${item._id}-${index}`}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{ duration: 0.6 }}
+                  whileHover={{ y: -5 }}
+                  className="bg-card rounded-xl p-6 border border-border/50 card-hover relative h-full"
                 >
-                  <ChevronLeft className="w-6 h-6 text-foreground" />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background p-2 rounded-full shadow-md transition-all translate-x-4 hover:scale-110"
-                  aria-label="Next feedback"
-                >
-                  <ChevronRight className="w-6 h-6 text-foreground" />
-                </button>
-              </>
-            )}
-
-            {/* Slider Container */}
-            <Slider ref={setSliderRef} {...settings}>
-              {feedback.map((item) => (
-                <div key={item._id} className="px-2">
-                  <motion.div
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ duration: 0.6 }}
-                    whileHover={{ y: -5 }}
-                    className="bg-card rounded-xl p-6 border border-border/50 card-hover relative h-full"
-                  >
-                    <Quote className="absolute top-4 right-4 w-8 h-8 text-primary/20" />
-                    <div className="flex items-center space-x-4 mb-4">
-                      <img
-                        src={item.image || "/default-avatar.jpg"}
-                        alt={item.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/default-avatar.jpg";
-                        }}
-                      />
-                      <div>
-                        <h4 className="font-semibold text-foreground">
-                          {item.name}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {item.title}
-                        </p>
-                        <div className="flex items-center space-x-1 mt-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < item.rating
-                                  ? "fill-yellow-400 text-yellow-400"
-                                  : "text-muted-foreground"
-                              }`}
-                            />
-                          ))}
-                        </div>
+                  <Quote className="absolute top-4 right-4 w-8 h-8 text-primary/20" />
+                  <div className="flex items-center space-x-4 mb-4">
+                    <img
+                      src={item.image || "/default-avatar.jpg"}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/default-avatar.jpg";
+                      }}
+                    />
+                    <div>
+                      <h4 className="font-semibold text-foreground">
+                        {item.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {item.title}
+                      </p>
+                      <div className="flex items-center space-x-1 mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < item.rating
+                                ? "fill-yellow-400 text-yellow-400"
+                                : "text-muted-foreground"
+                            }`}
+                          />
+                        ))}
                       </div>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
-                      "{item.description}"
-                    </p>
-                  </motion.div>
-                </div>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed">
+                    "{item.description}"
+                  </p>
+                </motion.div>
               ))}
-            </Slider>
+            </div>
+
+            {/* Pagination Dots */}
+            {feedback.length > slidesPerView && (
+              <div className="flex justify-center gap-2 mt-8">
+                {Array.from({
+                  length: Math.ceil(feedback.length / slidesPerView),
+                }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index * slidesPerView)}
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      currentIndex >= index * slidesPerView && 
+                      currentIndex < (index + 1) * slidesPerView
+                        ? "bg-primary w-6"
+                        : "bg-muted-foreground/30"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

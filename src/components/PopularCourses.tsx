@@ -1,14 +1,19 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { TrendingUp, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import CourseCard from "./CourseCard";
-import { mockCourses } from "@/data/mockData";
-import { Link } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { getPopularCourses } from "@/services/classService";
-import { toast } from "sonner";
-import LoadingSpiner from "./LoadingSpiner";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import { motion } from 'framer-motion';
+import { TrendingUp, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import CourseCard from './CourseCard';
+import { useQuery } from '@tanstack/react-query';
+import { getPopularCourses } from '@/services/classService';
+import { toast } from 'sonner';
+import LoadingSpiner from './LoadingSpiner';
+import { Link } from 'react-router';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const PopularCourses = () => {
   const {
@@ -16,14 +21,14 @@ const PopularCourses = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["popularCourses"],
+    queryKey: ['popularCourses'],
     queryFn: getPopularCourses,
     staleTime: 5 * 60 * 1000,
   });
 
   if (isLoading) return <LoadingSpiner />;
   if (error) {
-    toast.error("Failed to load popular courses");
+    toast.error('Failed to load popular courses');
     return <p>Error loading courses.</p>;
   }
 
@@ -81,17 +86,55 @@ const PopularCourses = () => {
           </motion.p>
         </motion.div>
 
-        {/* Courses Grid */}
+        {/* Swiper Slider */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          viewport={{ once: true }}
+          className="relative pb-16"
         >
-          {popularCourses.map((course, index) => (
-            <CourseCard key={course._id} course={course} index={index} />
-          ))}
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={30}
+            slidesPerView={1}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            pagination={{
+              clickable: true,
+              el: '.popular-courses-pagination',
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            className="pb-12"
+          >
+            {popularCourses.map((course, index) => (
+              <SwiperSlide key={course._id}>
+                <motion.div
+                  variants={itemVariants}
+                  custom={index}
+                  className="h-full"
+                >
+                  <CourseCard course={course} index={index} />
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom Pagination */}
+          <div className="popular-courses-pagination flex justify-center gap-2 mt-8"></div>
         </motion.div>
 
         {/* View All Button */}

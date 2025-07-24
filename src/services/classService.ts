@@ -285,10 +285,10 @@ export const submitAssignment = async (
   submission: string
 ) => {
   const response = await api.post(`/assignments/${assignmentId}/submit`, {
-    submission,
+    submission, 
   });
-  return response.data.data;
-};
+  return response.data.data; 
+}; 
 
 export const searchClasses = async (query: string) => {
   const response = await api.get(`/courses/search?q=${query}`);
