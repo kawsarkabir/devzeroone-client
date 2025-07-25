@@ -92,6 +92,7 @@ export const loginWithGoogle = async () => {
     });
 
     localStorage.setItem("token", response.data.token);
+    console.log("frontend:", response.data);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message);
