@@ -50,7 +50,7 @@ const ClassDetails = () => {
     queryKey: ["class-assignments", id],
     queryFn: () => getClassAssignments(id!),
   });
-  console.log("assigment data: ", assignments);
+
   const createAssignmentMutation = useMutation({
     mutationFn: (data: Assignment) => createAssignment(id!, data),
     onSuccess: () => {

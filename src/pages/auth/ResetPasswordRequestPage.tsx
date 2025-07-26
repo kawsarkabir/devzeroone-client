@@ -15,10 +15,10 @@ const ResetPasswordRequestPage = () => {
   const navigate = useNavigate();
 
   const resetMutation = useMutation({
-    mutationFn: sendPasswordReset, // Use the service function
+    mutationFn: sendPasswordReset,
     onSuccess: () => {
       toast.success("Password reset email sent! Check your inbox.");
-      navigate("/reset-password/confirm");
+      navigate("/login");
     },
     onError: (error: any) => {
       toast.error(error.message || "Failed to send reset email");
@@ -72,7 +72,7 @@ const ResetPasswordRequestPage = () => {
                 className="w-full btn-bounce glow-primary"
                 disabled={resetMutation.isPending}
               >
-                {resetMutation.isPending ? "Sending..." : "Send Reset Link"}
+                {resetMutation.isPending ? "Sending..." : "Next"}
               </Button>
             </form>
 

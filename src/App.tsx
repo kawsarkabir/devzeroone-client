@@ -37,6 +37,7 @@ import DashboardHome from "./components/DashboardHome";
 import StripeProvider from "./components/StripeProvider";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ResetPasswordRequestPage from "./pages/auth/ResetPasswordRequestPage";
+import PasswordResetSentPage from "./pages/ResetEmailSendPage";
 
 const queryClient = new QueryClient();
 

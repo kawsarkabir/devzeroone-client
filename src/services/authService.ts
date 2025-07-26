@@ -93,7 +93,6 @@ export const loginWithGoogle = async () => {
     });
 
     localStorage.setItem("token", response.data.token);
-    console.log("frontend:", response.data);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message);
@@ -110,7 +109,6 @@ export const logout = async () => {
 export const getCurrentUser = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
-  console.log(token);
 
   try {
     const decoded: any = jwtDecode(token);
@@ -139,7 +137,6 @@ export const isTokenValid = () => {
 export const sendPasswordReset = async (email: string) => {
   try {
     const res = await api.post("/reset-password/send-reset-email", { email });
-    console.log("=====send passwordreset", res.data);
 
     return res.data;
   } catch (error: any) {
@@ -158,7 +155,6 @@ export const confirmPasswordReset = async (
       oobCode,
       newPassword,
     });
-    console.log("====== confirm password", res.data);
     return res.data;
   } catch (error: any) {
     const message =
@@ -172,7 +168,6 @@ export const verifyResetCode = async (oobCode: string) => {
     const res = await api.post("/reset-password/verify-reset-code", {
       oobCode,
     });
-    console.log("======verifyResetCode:", res.data);
 
     return res.data;
   } catch (error: any) {

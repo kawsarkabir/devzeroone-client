@@ -17,10 +17,10 @@ import { BookOpen, Calendar, Clock, DollarSign } from "lucide-react";
 const MyEnrolledClasses = () => {
   const navigate = useNavigate();
 
-  const { 
-    data: enrollments = [], 
-    isLoading, 
-    error 
+  const {
+    data: enrollments = [],
+    isLoading,
+    error,
   } = useQuery<Enrollment[]>({
     queryKey: ["myEnrolledClasses"],
     queryFn: getMyEnrolledClasses,
@@ -28,14 +28,14 @@ const MyEnrolledClasses = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log("Enrollments in component:", enrollments);
-
   if (isLoading) {
     return (
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold mb-2">My Enrolled Classes</h1>
-          <p className="text-muted-foreground">Continue your learning journey</p>
+          <p className="text-muted-foreground">
+            Continue your learning journey
+          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
@@ -64,16 +64,21 @@ const MyEnrolledClasses = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold mb-2">My Enrolled Classes</h1>
-          <p className="text-muted-foreground">Continue your learning journey</p>
+          <p className="text-muted-foreground">
+            Continue your learning journey
+          </p>
         </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-destructive mb-4">
               <BookOpen className="w-16 h-16" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Error Loading Classes</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Error Loading Classes
+            </h3>
             <p className="text-muted-foreground text-center mb-4">
-              There was an error loading your enrolled classes. Please try again.
+              There was an error loading your enrolled classes. Please try
+              again.
             </p>
             <Button onClick={() => window.location.reload()}>Retry</Button>
           </CardContent>
@@ -93,7 +98,8 @@ const MyEnrolledClasses = () => {
         <p className="text-muted-foreground">Continue your learning journey</p>
         {enrollments.length > 0 && (
           <p className="text-sm text-muted-foreground mt-1">
-            {enrollments.length} {enrollments.length === 1 ? 'class' : 'classes'} enrolled
+            {enrollments.length}{" "}
+            {enrollments.length === 1 ? "class" : "classes"} enrolled
           </p>
         )}
       </div>
@@ -114,7 +120,7 @@ const MyEnrolledClasses = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {enrollments.map((enrollment: Enrollment, index: number) => {
             const course = enrollment.class;
-            
+
             if (!course) {
               console.error("Course data missing for enrollment:", enrollment);
               return null;
@@ -135,19 +141,23 @@ const MyEnrolledClasses = () => {
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.src = '/placeholder-course.jpg';
+                        target.src = "/placeholder-course.jpg";
                       }}
                     />
                     <div className="absolute top-2 right-2">
-                      <Badge 
-                        variant={enrollment.status === 'active' ? 'default' : 'secondary'}
+                      <Badge
+                        variant={
+                          enrollment.status === "active"
+                            ? "default"
+                            : "secondary"
+                        }
                         className="capitalize"
                       >
                         {enrollment.status}
                       </Badge>
                     </div>
                   </div>
-                  
+
                   <CardHeader>
                     <CardTitle className="line-clamp-2 text-lg">
                       {course.title}
@@ -159,28 +169,29 @@ const MyEnrolledClasses = () => {
                       <Badge variant="outline">{course.category}</Badge>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-3">
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {course.description}
                     </p>
-                    
+
                     <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                       <div className="flex items-center">
                         <Clock className="w-3 h-3 mr-1" />
                         {course.duration}
                       </div>
                       <div className="flex items-center">
-                        <DollarSign className="w-3 h-3 mr-1" />
-                        ${enrollment.amount}
+                        <DollarSign className="w-3 h-3 mr-1" />$
+                        {enrollment.amount}
                       </div>
                       <div className="flex items-center col-span-2">
                         <Calendar className="w-3 h-3 mr-1" />
-                        Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                        Enrolled:{" "}
+                        {new Date(enrollment.enrolledAt).toLocaleDateString()}
                       </div>
                     </div>
                   </CardContent>
-                  
+
                   <CardFooter>
                     <Button
                       className="w-full"

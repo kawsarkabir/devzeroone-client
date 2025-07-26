@@ -73,7 +73,7 @@ export default function FaqSection() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-start"
           >
-            <Lottie animationData={faqAnimation} loop className="h-36" />
+            <Lottie animationData={faqAnimation} className="h-36" />
 
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Frequently Asked Questions

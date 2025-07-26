@@ -51,6 +51,5 @@ export const enrollInClass = async (
 
 export const getMyEnrolledClasses = async () => {
   const response = await api.get("/enrollments/my");
-  console.log(response.data.enrollments);
-  return response.data.enrollments; // Updated to match backend response
+  return response.data.enrollments;
 };

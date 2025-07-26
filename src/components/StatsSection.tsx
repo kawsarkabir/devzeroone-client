@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { Users, BookOpen, TrendingUp, Award } from "lucide-react";
-import { getStats, Stats } from "@/services/statsService"; // ensure Stats interface is exported from here
+import { getStats, Stats } from "@/services/statsService";
 
 const StatsSection = () => {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -46,7 +46,7 @@ const StatsSection = () => {
         },
         {
           icon: Award,
-          value: 98, // You can fetch from backend too if available
+          value: 98,
           label: "Success Rate",
           description: "Student satisfaction guarantee",
           suffix: "%",

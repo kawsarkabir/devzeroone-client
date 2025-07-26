@@ -165,7 +165,7 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={handleForgotPassword}
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm text-primary cursor-pointer hover:underline"
                 >
                   Forgot password?
                 </button>

@@ -56,7 +56,6 @@ export const getProfile = async () => {
 
 export const submitTeacherRequest = async (data: TeacherRequest) => {
   const res = await api.post("/users/teacher-request", data);
-  console.log(res.data);
   return res.data;
 };
 
@@ -90,6 +89,5 @@ export const rejectTeacherRequest = async (requestId: string) => {
 
 export const getMyTeacherRequest = async () => {
   const response = await api.get("/users/my-teacher-request");
-  console.log(response.data);
   return response.data;
 };

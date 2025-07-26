@@ -1,10 +1,28 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Play, Users, BookOpen, Award } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Play, Users, BookOpen, Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { getStats } from "@/services/statsService";
 
 const Hero = () => {
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await getStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -36,7 +54,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with gradient */}
       <div className="absolute inset-0 hero-gradient" />
-      
+
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <motion.div
@@ -74,7 +92,7 @@ const Hero = () => {
               variants={itemVariants}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6"
             >
-              Master Skills with{' '}
+              Master Skills with{" "}
               <span className="text-gradient">DEVZeroOne</span>
             </motion.h1>
 
@@ -82,8 +100,9 @@ const Hero = () => {
               variants={itemVariants}
               className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0"
             >
-              Transform your career with expert-led courses in web development, data science, 
-              digital marketing, and more. Join thousands of successful learners today.
+              A next-generation programming platform where you will learn core
+              concepts, implement real projects, share your knowledge, and
+              repeat to become a next-level developer.
             </motion.p>
 
             <motion.div
@@ -99,7 +118,7 @@ const Hero = () => {
                   Get Started <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="lg"
@@ -116,16 +135,22 @@ const Hero = () => {
               className="grid grid-cols-3 gap-8 pt-8 border-t border-border/30"
             >
               <div className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-primary">15,420+</div>
+                <div className="text-2xl font-bold text-primary">
+                  {stats?.totalUsers}+
+                </div>
                 <div className="text-sm text-muted-foreground">Students</div>
               </div>
               <div className="text-center lg:text-left">
-                <div className="text-2xl font-bold text-primary">156+</div>
+                <div className="text-2xl font-bold text-primary">
+                  {stats?.totalClasses}+
+                </div>
                 <div className="text-sm text-muted-foreground">Courses</div>
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-2xl font-bold text-primary">98%</div>
-                <div className="text-sm text-muted-foreground">Success Rate</div>
+                <div className="text-sm text-muted-foreground">
+                  Success Rate
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -154,19 +179,25 @@ const Hero = () => {
                   <div className="bg-card rounded-lg p-4 card-hover">
                     <BookOpen className="w-8 h-8 text-primary mb-2" />
                     <h3 className="font-semibold mb-1">Interactive Learning</h3>
-                    <p className="text-xs text-muted-foreground">Hands-on projects and real-world applications</p>
+                    <p className="text-xs text-muted-foreground">
+                      Hands-on projects and real-world applications
+                    </p>
                   </div>
-                  
+
                   <div className="bg-card rounded-lg p-4 card-hover">
                     <Users className="w-8 h-8 text-primary mb-2" />
                     <h3 className="font-semibold mb-1">Expert Instructors</h3>
-                    <p className="text-xs text-muted-foreground">Learn from industry professionals</p>
+                    <p className="text-xs text-muted-foreground">
+                      Learn from industry professionals
+                    </p>
                   </div>
-                  
+
                   <div className="bg-card rounded-lg p-4 card-hover col-span-2">
                     <Award className="w-8 h-8 text-primary mb-2" />
                     <h3 className="font-semibold mb-1">Certification Ready</h3>
-                    <p className="text-xs text-muted-foreground">Get industry-recognized certifications upon completion</p>
+                    <p className="text-xs text-muted-foreground">
+                      Get industry-recognized certifications upon completion
+                    </p>
                   </div>
                 </div>
               </motion.div>
@@ -183,7 +214,7 @@ const Hero = () => {
                 }}
                 className="absolute -top-4 -right-4 w-16 h-16 bg-primary/20 rounded-full blur-xl"
               />
-              
+
               <motion.div
                 animate={{
                   y: [0, -15, 0],
