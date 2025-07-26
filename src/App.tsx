@@ -35,6 +35,8 @@ import Footer from "./components/Footer";
 import AuthProvider from "./providers/AuthProvider";
 import DashboardHome from "./components/DashboardHome";
 import StripeProvider from "./components/StripeProvider";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ResetPasswordRequestPage from "./pages/auth/ResetPasswordRequestPage";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +57,14 @@ const App = () => (
                 <Route path="/blogs" element={<Blogs />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route
+                  path="/reset-password"
+                  element={<ResetPasswordRequestPage />}
+                />
+                <Route
+                  path="/reset-password/confirm"
+                  element={<ResetPasswordPage />}
+                />
                 <Route path="/unauthorized" element={<Unauthorized />} />
 
                 {/* Protected Public  */}

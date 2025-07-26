@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signOut,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "@/config/firebase";
 import api from "./api";
@@ -130,5 +131,53 @@ export const isTokenValid = () => {
     return decoded.exp * 1000 > Date.now();
   } catch (error) {
     return false;
+  }
+};
+
+// RESET
+// RESET PASSWORD
+export const sendPasswordReset = async (email: string) => {
+  try {
+    const res = await api.post("/reset-password/send-reset-email", { email });
+    console.log("=====send passwordreset", res.data);
+
+    return res.data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "Failed to send reset email";
+    throw new Error(message);
+  }
+};
+
+export const confirmPasswordReset = async (
+  oobCode: string,
+  newPassword: string
+) => {
+  try {
+    const res = await api.post("/reset-password/confirm-reset", {
+      oobCode,
+      newPassword,
+    });
+    console.log("====== confirm password", res.data);
+    return res.data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "Failed to reset password";
+    throw new Error(message);
+  }
+};
+
+export const verifyResetCode = async (oobCode: string) => {
+  try {
+    const res = await api.post("/reset-password/verify-reset-code", {
+      oobCode,
+    });
+    console.log("======verifyResetCode:", res.data);
+
+    return res.data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "Failed to verify reset code";
+    throw new Error(message);
   }
 };
