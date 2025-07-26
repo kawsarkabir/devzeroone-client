@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { loginWithEmail, loginWithGoogle } from "../services/authService";
 import { setUser } from "../store/slices/authSlice";
 import { toast } from "sonner";
@@ -27,29 +27,30 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Email/password login
+  // AUTH: EMAIL AND PASSWORD
   const loginMutation = useMutation({
     mutationFn: loginWithEmail,
     onSuccess: (data) => {
       dispatch(setUser(data.user));
-      localStorage.setItem("token", data.token); // ✅ Optional: store token
+      localStorage.setItem("token", data.token);
       toast.success("Logged in successfully");
-      navigate("/dashboard");
+      navigate(`${location.state ? location.state : "/"}`);
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Login failed");
     },
   });
 
-  // Google login
+  // AUTH: GOOGLE LOGIN
   const googleLoginMutation = useMutation({
     mutationFn: loginWithGoogle,
     onSuccess: (data) => {
       dispatch(setUser(data.user));
-      localStorage.setItem("token", data.token); // ✅ Optional
-      toast.success("Logged in with Google");
-      navigate("/dashboard");
+      localStorage.setItem("token", data.token);
+      toast.success("Logged in successfully");
+      navigate(`${location.state ? location.state : "/"}`);
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Google sign-in failed");

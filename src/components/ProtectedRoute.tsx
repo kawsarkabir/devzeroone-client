@@ -18,20 +18,20 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   const location = useLocation();
 
-  // ⏳ Show loading spinner while auth state is checking
+  // Show loading spinner while auth state is checking
   if (isLoading) return <LoadingSpiner />;
 
-  // 🔒 If not logged in, redirect to login with the current path preserved
+  // If not logged in, redirect to login with the current path preserved
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={location.pathname} />;
   }
 
-  // 🚫 If role mismatch, block access
+  // If role mismatch, block access
   if (requiredRole && user?.role !== requiredRole) {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  // ✅ Authorized
+  // Authorized
   return <>{children}</>;
 };
 
