@@ -113,7 +113,7 @@ const CourseDetails = () => {
 
                 <div className="flex items-center space-x-1">
                   <Clock className="w-4 h-4 text-muted-foreground" />
-                  <span>{course.duration}</span>
+                  <span>{course.duration} hours</span>
                 </div>
               </div>
 
@@ -237,7 +237,7 @@ const CourseDetails = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Duration:</span>
-                      <span>{course.duration}</span>
+                      <span>{course.duration} hours</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Category:</span>

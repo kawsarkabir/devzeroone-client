@@ -36,7 +36,7 @@ const FeedbackSection = () => {
     if (!isAutoPlaying || feedback.length <= slidesPerView) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => 
+      setCurrentIndex((prev) =>
         prev + slidesPerView >= feedback.length ? 0 : prev + 1
       );
     }, 5000);
@@ -54,7 +54,7 @@ const FeedbackSection = () => {
   const getVisibleSlides = () => {
     const slides = [];
     const endIndex = Math.min(currentIndex + slidesPerView, feedback.length);
-    
+
     for (let i = currentIndex; i < endIndex; i++) {
       slides.push(feedback[i]);
     }
@@ -125,7 +125,9 @@ const FeedbackSection = () => {
         ) : isError || feedback.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">
-              {isError ? "Failed to load feedback" : "No feedback available yet"}
+              {isError
+                ? "Failed to load feedback"
+                : "No feedback available yet"}
             </p>
           </div>
         ) : (
@@ -174,7 +176,7 @@ const FeedbackSection = () => {
                       </div>
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed line-clamp-2">
                     "{item.description}"
                   </p>
                 </motion.div>
@@ -191,7 +193,7 @@ const FeedbackSection = () => {
                     key={index}
                     onClick={() => goToSlide(index * slidesPerView)}
                     className={`w-3 h-3 rounded-full transition-all ${
-                      currentIndex >= index * slidesPerView && 
+                      currentIndex >= index * slidesPerView &&
                       currentIndex < (index + 1) * slidesPerView
                         ? "bg-primary w-6"
                         : "bg-muted-foreground/30"

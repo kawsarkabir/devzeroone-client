@@ -33,13 +33,10 @@ interface ClassForm {
 
 const categories = [
   "Web Development",
-  "Mobile Development",
-  "Digital Marketing",
-  "Data Science",
+  "JavaScript",
+  "Nextjs",
+  "Video Editing",
   "UI/UX Design",
-  "Cybersecurity",
-  "Cloud Computing",
-  "Artificial Intelligence",
 ];
 const levels = ["Beginner", "Intermediate", "Advanced"];
 
@@ -268,7 +265,7 @@ const AddClass = () => {
                 {...register("image", { required: true })}
                 type="file"
                 accept="image/*"
-                className="border rounded-md p-2 w-full"
+                className="border rounded-md p-2 w-full cursor-pointer"
               />
 
               {errors.image && (
@@ -307,7 +304,7 @@ const AddClass = () => {
               <Button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="btn-bounce"
+                className="btn-bounce cursor-pointer"
               >
                 {createMutation.isPending ? "Creating..." : "Add Class"}
               </Button>

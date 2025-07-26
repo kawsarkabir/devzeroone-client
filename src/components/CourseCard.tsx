@@ -95,7 +95,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, index = 0 }) => {
 
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
-            <span>{course.duration}</span>
+            <span>{course.duration} hours</span>
           </div>
         </div>
 

@@ -220,7 +220,7 @@ const RegisterPage = () => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full btn-bounce glow-primary"
+                className="w-full btn-bounce glow-primary cursor-pointer"
                 disabled={registerMutation.isPending}
               >
                 {registerMutation.isPending
