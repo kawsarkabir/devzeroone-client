@@ -1,12 +1,12 @@
-# DEVZeroOne - A Next Gen E-tech Platform
+![alt text](./public/image.png)
 
-## 📚 About DEVZeroOne
+# DEVZeroOne - A Next Gen E-tech Platform
 
 DEVZeroOne is a comprehensive educational platform built with the MERN stack (MongoDB, Express.js, React, Node.js) that revolutionizes the way educational institutions, tutors, and students interact. Our platform makes skill learning and class management more efficient and accessible than ever before.
 
-- **Student Username | Password**: student@devzeroone.com | student123
-- **Teacher Username | Password**: teacher@devzeroone.com | teacher123
-- **Admin Username | Password**: admin@devzeroone.com | admin123
+- **Student Username | Password**: student@devzeroone.com | Student123
+- **Teacher Username | Password**: teacher@devzeroone.com | Teacher123
+- **Admin Username | Password**: admin@devzeroone.com | Admin123
 
 ## ✨ Key Features
 
