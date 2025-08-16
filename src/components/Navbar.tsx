@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router";
-import { Menu, X, User, LogOut, Settings } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -10,8 +10,10 @@ import { toast } from "sonner";
 import { auth } from "@/config/firebase";
 import { useAppDispatch } from "@/store/hooks";
 import { clearUser } from "@/store/slices/authSlice";
+import { ThemeContext } from "@/providers/ThemeContext";
 
 const Navbar = () => {
+  const { theme, toggleTheme } = use(ThemeContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -168,6 +170,13 @@ const Navbar = () => {
               {/* Desktop Auth Section */}
               {!isMobile && (
                 <>
+                  <button
+                    onClick={toggleTheme}
+                    className="mr-4 p-2 rounded-full  transition cursor-pointer"
+                    aria-label="Toggle Dark Mode"
+                  >
+                    {theme === "dark" ? <Sun size={19} /> : <Moon size={19} />}
+                  </button>
                   {isAuthenticated && user ? (
                     <div className="relative">
                       <motion.button

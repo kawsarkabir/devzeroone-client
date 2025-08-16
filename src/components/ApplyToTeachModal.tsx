@@ -141,7 +141,7 @@ const ApplyToTeachModal = () => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="btn-bounce glow-primary text-lg px-8 py-6">
+        <Button className="btn-bounce glow-primary text-lg px-8 py-6 cursor-pointer">
           {status === "rejected"
             ? "Request To Another Review"
             : "Apply to Teach"}

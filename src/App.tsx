@@ -38,169 +38,172 @@ import StripeProvider from "./components/StripeProvider";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ResetPasswordRequestPage from "./pages/auth/ResetPasswordRequestPage";
 import PasswordResetSentPage from "./pages/ResetEmailSendPage";
+import { ThemeProvider } from "./providers/ThemeContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <Provider store={store}>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <BrowserRouter>
-            <div className="min-h-screen bg-background">
-              <Navbar />
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/courses" element={<AllClasses />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route
-                  path="/reset-password"
-                  element={<ResetPasswordRequestPage />}
-                />
-                <Route
-                  path="/reset-password/confirm"
-                  element={<ResetPasswordPage />}
-                />
-                <Route path="/unauthorized" element={<Unauthorized />} />
-
-                {/* Protected Public  */}
-                <Route
-                  path="/courses/:id"
-                  element={
-                    <ProtectedRoute>
-                      <CourseDetails />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/payment/:id"
-                  element={
-                    <ProtectedRoute>
-                      <StripeProvider>
-                        <PaymentPage />
-                      </StripeProvider>
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/teach"
-                  element={
-                    <ProtectedRoute>
-                      <TeachPage />
-                    </ProtectedRoute>
-                  }
-                />
-
-                {/* Dashboard Routes */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <DashboardLayout />
-                    </ProtectedRoute>
-                  }
-                >
-                  {/* Dashboard home page content */}
-                  <Route index element={<DashboardHome />} />
-
-                  {/* Student Routes */}
+  <ThemeProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <BrowserRouter>
+              <div className="min-h-screen bg-background">
+                <Navbar />
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/courses" element={<AllClasses />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
                   <Route
-                    path="my-enrolled-classes"
-                    // requiredRoles={["student"]}
+                    path="/reset-password"
+                    element={<ResetPasswordRequestPage />}
+                  />
+                  <Route
+                    path="/reset-password/confirm"
+                    element={<ResetPasswordPage />}
+                  />
+                  <Route path="/unauthorized" element={<Unauthorized />} />
+
+                  {/* Protected Public  */}
+                  <Route
+                    path="/courses/:id"
                     element={
-                      <ProtectedRoute requiredRoles={["student"]}>
-                        <MyEnrolledClasses />
+                      <ProtectedRoute>
+                        <CourseDetails />
                       </ProtectedRoute>
                     }
                   />
                   <Route
-                    path="my-enrolled-classes/:id"
+                    path="/payment/:id"
                     element={
-                      <ProtectedRoute requiredRoles={["student"]}>
-                        <MyEnrolledClassDetails />
+                      <ProtectedRoute>
+                        <StripeProvider>
+                          <PaymentPage />
+                        </StripeProvider>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/teach"
+                    element={
+                      <ProtectedRoute>
+                        <TeachPage />
                       </ProtectedRoute>
                     }
                   />
 
-                  {/* Teacher Routes */}
+                  {/* Dashboard Routes */}
                   <Route
-                    path="add-class"
+                    path="/dashboard"
                     element={
-                      <ProtectedRoute requiredRoles={["teacher"]}>
-                        <AddClass />
+                      <ProtectedRoute>
+                        <DashboardLayout />
                       </ProtectedRoute>
                     }
-                  />
-                  <Route
-                    path="my-classes"
-                    element={
-                      <ProtectedRoute requiredRoles={["teacher"]}>
-                        <MyClasses />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="my-class/:id"
-                    element={
-                      <ProtectedRoute requiredRoles={["teacher"]}>
-                        <ClassDetails />
-                      </ProtectedRoute>
-                    }
-                  />
+                  >
+                    {/* Dashboard home page content */}
+                    <Route index element={<DashboardHome />} />
 
-                  {/* Admin Routes */}
-                  <Route
-                    path="teacher-requests"
-                    element={
-                      <ProtectedRoute requiredRoles={["admin"]}>
-                        <TeacherRequests />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="users"
-                    element={
-                      <ProtectedRoute requiredRoles={["admin"]}>
-                        <Users />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="courses"
-                    element={
-                      <ProtectedRoute requiredRoles={["admin"]}>
-                        <AllClassesAdmin />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="class-progress/:id"
-                    element={
-                      <ProtectedRoute requiredRoles={["admin"]}>
-                        <ClassDetails />
-                      </ProtectedRoute>
-                    }
-                  />
+                    {/* Student Routes */}
+                    <Route
+                      path="my-enrolled-classes"
+                      // requiredRoles={["student"]}
+                      element={
+                        <ProtectedRoute requiredRoles={["student"]}>
+                          <MyEnrolledClasses />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="my-enrolled-classes/:id"
+                      element={
+                        <ProtectedRoute requiredRoles={["student"]}>
+                          <MyEnrolledClassDetails />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                  {/* Shared */}
-                  <Route path="profile" element={<Profile />} />
-                </Route>
+                    {/* Teacher Routes */}
+                    <Route
+                      path="add-class"
+                      element={
+                        <ProtectedRoute requiredRoles={["teacher"]}>
+                          <AddClass />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="my-classes"
+                      element={
+                        <ProtectedRoute requiredRoles={["teacher"]}>
+                          <MyClasses />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="my-class/:id"
+                      element={
+                        <ProtectedRoute requiredRoles={["teacher"]}>
+                          <ClassDetails />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                {/* Catch all */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <Footer />
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </AuthProvider>
-  </Provider>
+                    {/* Admin Routes */}
+                    <Route
+                      path="teacher-requests"
+                      element={
+                        <ProtectedRoute requiredRoles={["admin"]}>
+                          <TeacherRequests />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="users"
+                      element={
+                        <ProtectedRoute requiredRoles={["admin"]}>
+                          <Users />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="courses"
+                      element={
+                        <ProtectedRoute requiredRoles={["admin"]}>
+                          <AllClassesAdmin />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="class-progress/:id"
+                      element={
+                        <ProtectedRoute requiredRoles={["admin"]}>
+                          <ClassDetails />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    {/* Shared */}
+                    <Route path="profile" element={<Profile />} />
+                  </Route>
+
+                  {/* Catch all */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Footer />
+              </div>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </Provider>
+  </ThemeProvider>
 );
 
 export default App;

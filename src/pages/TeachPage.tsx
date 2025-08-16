@@ -164,9 +164,6 @@ const TeachPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {/* APPLY FOR TEACH MODAL */}
             <ApplyToTeachModal />
-            <Button size="lg" variant="outline">
-              Learn More
-            </Button>
           </div>
         </motion.div>
       </div>

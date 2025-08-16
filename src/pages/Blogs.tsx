@@ -1,97 +1,125 @@
-import { motion } from 'framer-motion';
-import { Clock, User, Calendar, ArrowRight, Search, Tag } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
+import { motion } from "framer-motion";
+import { Clock, User, Calendar, ArrowRight, Search, Tag } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 const Blogs = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const categories = ['All', 'Web Development', 'Mobile Apps', 'Data Science', 'AI/ML', 'DevOps', 'Career Tips'];
+  const categories = [
+    "All",
+    "Web Development",
+    "Mobile Apps",
+    "Data Science",
+    "AI/ML",
+    "DevOps",
+    "Career Tips",
+  ];
 
   const blogPosts = [
     {
       id: 1,
       title: "The Complete Guide to React 19: What's New and How to Upgrade",
-      description: "Explore the latest features in React 19 including concurrent rendering, automatic batching, and the new Suspense boundaries.",
+      description:
+        "Explore the latest features in React 19 including concurrent rendering, automatic batching, and the new Suspense boundaries.",
       author: "Sarah Johnson",
       date: "2024-03-15",
       readTime: "8 min read",
       category: "Web Development",
       tags: ["React", "JavaScript", "Frontend"],
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop",
-      featured: true
+      image:
+        "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop",
+      featured: true,
     },
     {
       id: 2,
       title: "Building Your First Full-Stack Application: A Step-by-Step Guide",
-      description: "Learn how to create a complete web application from frontend to backend using modern technologies.",
+      description:
+        "Learn how to create a complete web application from frontend to backend using modern technologies.",
       author: "Michael Chen",
       date: "2024-03-12",
       readTime: "12 min read",
       category: "Web Development",
       tags: ["Full-Stack", "Node.js", "React"],
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop",
     },
     {
       id: 3,
       title: "Machine Learning for Beginners: Understanding the Fundamentals",
-      description: "Demystify machine learning concepts and learn how to get started with your first ML project.",
+      description:
+        "Demystify machine learning concepts and learn how to get started with your first ML project.",
       author: "Emily Rodriguez",
       date: "2024-03-10",
       readTime: "10 min read",
       category: "AI/ML",
       tags: ["Machine Learning", "Python", "Data Science"],
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
     },
     {
       id: 4,
       title: "Career Transition: From Bootcamp to Senior Developer",
-      description: "Real stories and practical advice from developers who successfully transitioned into tech careers.",
+      description:
+        "Real stories and practical advice from developers who successfully transitioned into tech careers.",
       author: "David Park",
       date: "2024-03-08",
       readTime: "6 min read",
       category: "Career Tips",
       tags: ["Career", "Bootcamp", "Growth"],
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop",
     },
     {
       id: 5,
       title: "Docker and Kubernetes: A DevOps Essential Guide",
-      description: "Master containerization and orchestration with Docker and Kubernetes for modern application deployment.",
+      description:
+        "Master containerization and orchestration with Docker and Kubernetes for modern application deployment.",
       author: "Alex Thompson",
       date: "2024-03-05",
       readTime: "15 min read",
       category: "DevOps",
       tags: ["Docker", "Kubernetes", "DevOps"],
-      image: "https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400&h=250&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1605745341112-85968b19335b?w=400&h=250&fit=crop",
     },
     {
       id: 6,
       title: "Mobile App Development: Native vs Cross-Platform",
-      description: "Compare different approaches to mobile development and choose the right strategy for your project.",
+      description:
+        "Compare different approaches to mobile development and choose the right strategy for your project.",
       author: "Lisa Wang",
       date: "2024-03-02",
       readTime: "9 min read",
       category: "Mobile Apps",
       tags: ["Mobile", "React Native", "Flutter"],
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop"
-    }
+      image:
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
+    },
   ];
 
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+  const filteredPosts = blogPosts.filter((post) => {
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
+  const featuredPost = blogPosts.find((post) => post.featured);
+  const regularPosts = filteredPosts.filter((post) => !post.featured);
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,7 +135,8 @@ const Blogs = () => {
               DEVZeroOne <span className="text-primary">Blog</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Stay updated with the latest trends, tutorials, and insights from the world of programming and technology.
+              Stay updated with the latest trends, tutorials, and insights from
+              the world of programming and technology.
             </p>
           </motion.div>
         </div>
@@ -133,7 +162,9 @@ const Blogs = () => {
               {categories.map((category) => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
                 >
@@ -146,7 +177,7 @@ const Blogs = () => {
       </section>
 
       {/* Featured Post */}
-      {featuredPost && selectedCategory === 'All' && !searchTerm && (
+      {featuredPost && selectedCategory === "All" && !searchTerm && (
         <section className="py-12 px-4">
           <div className="container mx-auto">
             <motion.div
@@ -177,8 +208,12 @@ const Blogs = () => {
                         {featuredPost.readTime}
                       </div>
                     </div>
-                    <h3 className="text-2xl font-bold mb-4">{featuredPost.title}</h3>
-                    <p className="text-muted-foreground mb-6">{featuredPost.description}</p>
+                    <h3 className="text-2xl font-bold mb-4">
+                      {featuredPost.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-6">
+                      {featuredPost.description}
+                    </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-muted-foreground" />
@@ -216,7 +251,10 @@ const Blogs = () => {
                       alt={post.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <Badge className="absolute top-4 left-4" variant="secondary">
+                    <Badge
+                      className="absolute top-4 left-4"
+                      variant="secondary"
+                    >
                       {post.category}
                     </Badge>
                   </div>
@@ -250,7 +288,10 @@ const Blogs = () => {
                     </div>
                     <div className="flex flex-wrap gap-1 mt-4">
                       {post.tags.map((tag) => (
-                        <div key={tag} className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <div
+                          key={tag}
+                          className="flex items-center gap-1 text-xs text-muted-foreground"
+                        >
                           <Tag className="h-3 w-3" />
                           {tag}
                         </div>
@@ -264,7 +305,9 @@ const Blogs = () => {
 
           {filteredPosts.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No articles found matching your criteria.</p>
+              <p className="text-muted-foreground">
+                No articles found matching your criteria.
+              </p>
             </div>
           )}
         </div>
@@ -279,16 +322,21 @@ const Blogs = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Stay Updated
+            </h2>
             <p className="text-lg mb-8 opacity-90">
-              Subscribe to our newsletter and never miss the latest tutorials and insights.
+              Subscribe to our newsletter and never miss the latest tutorials
+              and insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Input
                 placeholder="Enter your email"
-                className="bg-primary-foreground text-foreground"
+                className="bg-primary-foreground text-foreground border-0"
               />
-              <Button variant="secondary">Subscribe</Button>
+              <Button variant="secondary" className="cursor-pointer">
+                Subscribe
+              </Button>
             </div>
           </motion.div>
         </div>

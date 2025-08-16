@@ -5,7 +5,7 @@ import StatsSection from "@/components/StatsSection";
 import FeedbackSection from "@/components/FeedbackSection";
 import PartnersSection from "@/components/PartnersSection";
 import TeachCallToAction from "@/components/TeachCallToAction";
-import UsersList from "@/components/UserList";
+// import UsersList from "@/components/UserList";
 import FaqSection from "@/components/FAQ";
 import UpcomingWorkshops from "@/components/UpcomingWorkshops";
 
@@ -19,7 +19,7 @@ const Index = () => {
       <FeedbackSection />
       <PartnersSection />
       <TeachCallToAction />
-      <UsersList />
+      {/* <UsersList /> */}
       <FaqSection />
     </main>
   );
