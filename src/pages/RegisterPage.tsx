@@ -1,7 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router";
-import { Eye, EyeOff, Mail, Lock, User as UserIcon, Image } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User as UserIcon,
+  Upload,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -15,18 +23,46 @@ import {
 import { setUser } from "../store/slices/authSlice";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
+import { uploadImageToImgBB } from "@/utils/uploadImage";
+
+interface FormData extends Omit<RegisterData, "photoURL"> {
+  image: FileList;
+}
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [acceptTerms, setAcceptTerms] = React.useState(false);
+  const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = React.useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterData>();
+    watch,
+    setValue,
+    clearErrors,
+  } = useForm<FormData>();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Watch for image file changes
+  const imageFile = watch("image");
+
+  // Handle image preview
+  React.useEffect(() => {
+    if (imageFile && imageFile[0]) {
+      const file = imageFile[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  }, [imageFile]);
 
   const registerMutation = useMutation({
     mutationFn: registerWithEmail,
@@ -52,13 +88,57 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = (data: RegisterData) => {
+  const onSubmit = async (data: FormData) => {
     if (!acceptTerms) {
       toast.error("You must accept the terms and conditions");
       return;
     }
-    registerMutation.mutate(data);
+
+    try {
+      let photoURL = "";
+
+      // Upload image to ImgBB if provided
+      if (data.image && data.image[0]) {
+        setUploadingImage(true);
+        toast.info("Uploading profile picture...");
+
+        try {
+          photoURL = await uploadImageToImgBB(data.image[0]);
+          toast.success("Profile picture uploaded successfully!");
+        } catch (error) {
+          console.error("Image upload failed:", error);
+          toast.error("Failed to upload profile picture. Please try again.");
+          setUploadingImage(false);
+          return;
+        }
+
+        setUploadingImage(false);
+      }
+
+      // Prepare registration data
+      const registrationData: RegisterData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        photoURL: photoURL,
+      };
+
+      // Register user
+      registerMutation.mutate(registrationData);
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Registration failed. Please try again.");
+      setUploadingImage(false);
+    }
   };
+
+  const removeImage = () => {
+    setValue("image", undefined as any);
+    setImagePreview(null);
+    clearErrors("image");
+  };
+
+  const isSubmitting = registerMutation.isPending || uploadingImage;
 
   return (
     <div className="min-h-screen flex items-center justify-center py-20">
@@ -73,7 +153,7 @@ const RegisterPage = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <Link to="/" className="inline-flex items-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-xl">D</span>
                 </div>
                 <span className="text-xl font-bold text-gradient">
@@ -141,22 +221,6 @@ const RegisterPage = () => {
                 )}
               </div>
 
-              {/* Photo URL Field */}
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Photo URL (Optional)
-                </label>
-                <div className="relative">
-                  <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    type="url"
-                    placeholder="Enter photo URL"
-                    className="pl-10"
-                    {...register("photoURL")}
-                  />
-                </div>
-              </div>
-
               {/* Password Field */}
               <div>
                 <label className="block text-sm font-medium mb-2">
@@ -199,6 +263,83 @@ const RegisterPage = () => {
                   </p>
                 )}
               </div>
+              {/* Profile Picture Upload */}
+              <div>
+                <label className="block text-sm font-medium mb-3">
+                  Profile Picture
+                </label>
+
+                {/* Image Preview or Upload Area */}
+                <div className="flex flex-col items-center">
+                  {imagePreview ? (
+                    <div className="relative">
+                      <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-primary/20">
+                        <img
+                          src={imagePreview}
+                          alt="Profile preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center hover:bg-destructive/90 transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 rounded-full border-2 border-dashed border-border flex items-center justify-center bg-muted/50">
+                      <Upload className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                  )}
+
+                  {/* File Input */}
+                  <div className="mt-4 w-full">
+                    <input
+                      {...register("image", {
+                        required: "Profile picture is required",
+                        validate: {
+                          fileType: (files) => {
+                            if (!files || !files[0]) return true;
+                            const file = files[0];
+                            const allowedTypes = [
+                              "image/jpeg",
+                              "image/jpg",
+                              "image/png",
+                              "image/webp",
+                            ];
+                            if (!allowedTypes.includes(file.type)) {
+                              return "Only JPEG, PNG, and WebP images are allowed";
+                            }
+                            return true;
+                          },
+                          fileSize: (files) => {
+                            if (!files || !files[0]) return true;
+                            const file = files[0];
+                            const maxSize = 5 * 1024 * 1024; // 5MB
+                            if (file.size > maxSize) {
+                              return "Image size must be less than 5MB";
+                            }
+                            return true;
+                          },
+                        },
+                      })}
+                      type="file"
+                      accept="image/*"
+                      className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 file:cursor-pointer cursor-pointer"
+                    />
+                  </div>
+                </div>
+
+                {errors.image && (
+                  <p className="text-[11px] mt-2 text-red-300 text-center">
+                    {errors.image.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Terms and Conditions */}
               <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
@@ -217,13 +358,16 @@ const RegisterPage = () => {
                   </a>
                 </label>
               </div>
+
               {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full btn-bounce glow-primary cursor-pointer"
-                disabled={registerMutation.isPending}
+                disabled={isSubmitting}
               >
-                {registerMutation.isPending
+                {uploadingImage
+                  ? "Uploading Image..."
+                  : registerMutation.isPending
                   ? "Creating Account..."
                   : "Create Account"}
               </Button>
@@ -241,7 +385,7 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* social login */}
+            {/* Social Login */}
             <div className="flex items-center justify-between gap-4">
               {/* Google Sign Up */}
               <Button
@@ -249,7 +393,7 @@ const RegisterPage = () => {
                 variant="outline"
                 className="w-1/2 btn-bounce"
                 onClick={() => googleMutation.mutate()}
-                disabled={googleMutation.isPending}
+                disabled={googleMutation.isPending || isSubmitting}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -275,8 +419,8 @@ const RegisterPage = () => {
                 type="button"
                 variant="outline"
                 className="w-1/2 btn-bounce"
+                disabled={isSubmitting}
                 onClick={() => {
-                  // Add your GitHub login mutation or function here
                   toast.info("GitHub login not implemented yet");
                 }}
               >
@@ -294,6 +438,7 @@ const RegisterPage = () => {
                 GitHub
               </Button>
             </div>
+
             {/* Sign In Link */}
             <p className="text-center text-sm text-muted-foreground mt-6">
               Already have an account?
