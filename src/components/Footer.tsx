@@ -10,6 +10,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import sslImageBanner from "../../public/sslcommerz-banner.png";
 
 const Footer = () => {
   return (
@@ -147,9 +148,12 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
+        {/* payment options images  */}
+        <div className="border-t mt-8 pt-8">
+          <img src={sslImageBanner} alt="SSL Commerz Payment Options" />
+        </div>
         {/* Bottom Section */}
-        <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
             © 2024 DEVZeroOne. All rights reserved.
           </p>
