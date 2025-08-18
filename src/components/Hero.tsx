@@ -136,13 +136,13 @@ const Hero = () => {
             >
               <div className="text-center lg:text-left">
                 <div className="text-2xl font-bold text-primary">
-                  {stats?.totalUsers}+
+                  {stats?.totalUsers || 0}
                 </div>
                 <div className="text-sm text-muted-foreground">Students</div>
               </div>
               <div className="text-center lg:text-left">
                 <div className="text-2xl font-bold text-primary">
-                  {stats?.totalClasses}+
+                  {stats?.totalClasses || 0}
                 </div>
                 <div className="text-sm text-muted-foreground">Courses</div>
               </div>

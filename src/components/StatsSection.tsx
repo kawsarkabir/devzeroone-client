@@ -28,19 +28,19 @@ const StatsSection = () => {
     ? [
         {
           icon: Users,
-          value: stats.totalUsers,
+          value: stats.totalUsers || 0,
           label: "Active Students",
           description: "Learning and growing every day",
         },
         {
           icon: BookOpen,
-          value: stats.totalClasses,
+          value: stats.totalClasses || 0,
           label: "Expert Courses",
           description: "Covering all major technologies",
         },
         {
           icon: TrendingUp,
-          value: stats.totalEnrollments,
+          value: stats.totalEnrollments || 0,
           label: "Course Enrollments",
           description: "And counting rapidly",
         },
