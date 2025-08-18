@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Download } from "lucide-react";
+import api from "@/services/api";
 
 interface Enrollment {
   _id: string;
@@ -32,16 +33,8 @@ export default function OrderHistory() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/enrollments/my", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            // Add authorization if your backend requires JWT
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        const data = await res.json();
-        setEnrollments(data.enrollments || []);
+        const res = await api.get("/enrollments/my");
+        setEnrollments(res.data.enrollments || []);
       } catch (error) {
         console.error("Failed to fetch enrollments", error);
       } finally {
@@ -51,6 +44,25 @@ export default function OrderHistory() {
 
     fetchOrders();
   }, []);
+
+  // === Invoice Download ===
+  const handleDownloadInvoice = async (id: string) => {
+    try {
+      const res = await api.get(`/enrollments/${id}/invoice`, {
+        responseType: "blob", // important for PDF
+      });
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `invoice-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Failed to download invoice", error);
+    }
+  };
 
   return (
     <div className="container mx-auto py-10">
@@ -104,9 +116,13 @@ export default function OrderHistory() {
                   {new Date(enroll.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleDownloadInvoice(enroll._id)}
+                  >
                     <Download className="mr-2 h-4 w-4" />
-                    Invoice
+                    Invoice Download
                   </Button>
                 </TableCell>
               </TableRow>
