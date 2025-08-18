@@ -15,6 +15,7 @@ import {
   BarChart,
   Menu,
   X,
+  ListOrdered,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { RootState } from "../store/store";
@@ -92,6 +93,11 @@ const DashboardLayout = () => {
             icon: BookOpen,
           },
           { name: "Profile", path: "/dashboard/profile", icon: User },
+          {
+            name: "Order History",
+            path: "/dashboard/order-history",
+            icon: ListOrdered,
+          }
         ];
       case "teacher":
         return [

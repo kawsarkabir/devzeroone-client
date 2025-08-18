@@ -39,6 +39,7 @@ import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import ResetPasswordRequestPage from "./pages/auth/ResetPasswordRequestPage";
 import PasswordResetSentPage from "./pages/ResetEmailSendPage";
 import { ThemeProvider } from "./providers/ThemeContext";
+import OrderHistory from "./pages/dashboard/student/OrderHistory";
 
 const queryClient = new QueryClient();
 
@@ -125,6 +126,14 @@ const App = () => (
                       element={
                         <ProtectedRoute requiredRoles={["student"]}>
                           <MyEnrolledClassDetails />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="order-history"
+                      element={
+                        <ProtectedRoute requiredRoles={["student"]}>
+                          <OrderHistory />
                         </ProtectedRoute>
                       }
                     />

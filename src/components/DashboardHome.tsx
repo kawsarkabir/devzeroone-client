@@ -7,6 +7,7 @@ import {
   User,
   Plus,
   BookMarked,
+  ListOrdered,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
@@ -64,6 +65,13 @@ const DashboardHome = () => {
             description: "Explore and enroll in new courses",
             icon: BookOpen,
             path: "/courses",
+            color: "text-purple-500",
+          },
+          {
+            title: "Order History",
+            description: "View your past orders",
+            icon: ListOrdered,
+            path: "/dashboard/order-history",
             color: "text-purple-500",
           },
         ];
