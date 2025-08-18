@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 interface Workshop {
   id: number;
@@ -37,6 +38,10 @@ export default function UpcomingWorkshops() {
     };
     fetchWorkshops();
   }, []);
+
+  const handleRegister = () => {
+    toast.info("workshop register is not implement yet");
+  };
 
   return (
     <section className="py-12 section-bg">
@@ -79,7 +84,10 @@ export default function UpcomingWorkshops() {
                     <UserIcon className="w-4 h-4" />
                     <span>{workshop.instructor}</span>
                   </div>
-                  <Button variant="outline" className="w-full mt-4">
+                  <Button
+                    onClick={handleRegister}
+                    className="w-full mt-4 cursor-pointer"
+                  >
                     Register
                   </Button>
                 </CardContent>

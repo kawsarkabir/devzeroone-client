@@ -8,5 +8,6 @@ export interface Stats {
 
 export const getStats = async (): Promise<Stats> => {
   const response = await api.get("/stats");
+  console.log(response.data);
   return response.data;
 };

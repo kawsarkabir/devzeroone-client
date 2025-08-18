@@ -12,43 +12,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import AdminAnalyticsDashboard from "@/pages/dashboard/admin/AdminAnalyticsDashboard";
 
 const DashboardHome = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   const getCards = () => {
     switch (user?.role) {
-      case "admin":
-        return [
-          {
-            title: "Teacher Requests",
-            description: "Review and approve teacher applications",
-            icon: GraduationCap,
-            path: "/dashboard/teacher-requests",
-            color: "text-blue-400",
-          },
-          {
-            title: "Users",
-            description: "Manage all users and permissions",
-            icon: Users,
-            path: "/dashboard/users",
-            color: "text-green-400",
-          },
-          {
-            title: "All Courses",
-            description: "Approve and manage all classes",
-            icon: BookOpen,
-            path: "/dashboard/courses",
-            color: "text-purple-400",
-          },
-          {
-            title: "Profile",
-            description: "Manage your profile",
-            icon: User,
-            path: "/dashboard/profile",
-            color: "text-orange-400",
-          },
-        ];
       case "teacher":
         return [
           {
@@ -110,12 +80,15 @@ const DashboardHome = () => {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-6"
     >
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-gradient">
-          {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)} Dashboard
-        </h1>
-        <p className="text-muted-foreground">Overview and quick actions</p>
-      </div>
+      {user?.role !== "admin" && (
+        <div>
+          <h1 className="text-3xl font-bold mb-2 text-gradient">
+            {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}{" "}
+            Dashboard
+          </h1>
+          <p className="text-muted-foreground">Overview and quick actions</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card, index) => (
@@ -141,6 +114,18 @@ const DashboardHome = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* Analytics Dashboard - Only visible for admin users */}
+      {user?.role === "admin" && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-8"
+        >
+          <AdminAnalyticsDashboard />
+        </motion.div>
+      )}
     </motion.div>
   );
 };
