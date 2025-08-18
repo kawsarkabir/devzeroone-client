@@ -100,11 +100,8 @@ const RegisterPage = () => {
       // Upload image to ImgBB if provided
       if (data.image && data.image[0]) {
         setUploadingImage(true);
-        toast.info("Uploading profile picture...");
-
         try {
           photoURL = await uploadImageToImgBB(data.image[0]);
-          toast.success("Profile picture uploaded successfully!");
         } catch (error) {
           console.error("Image upload failed:", error);
           toast.error("Failed to upload profile picture. Please try again.");
@@ -293,7 +290,6 @@ const RegisterPage = () => {
                       <Upload className="w-8 h-8 text-muted-foreground" />
                     </div>
                   )}
-
                   {/* File Input */}
                   <div className="mt-4 w-full">
                     <input
@@ -365,9 +361,7 @@ const RegisterPage = () => {
                 className="w-full btn-bounce glow-primary cursor-pointer"
                 disabled={isSubmitting}
               >
-                {uploadingImage
-                  ? "Uploading Image..."
-                  : registerMutation.isPending
+                {isSubmitting || uploadingImage
                   ? "Creating Account..."
                   : "Create Account"}
               </Button>
